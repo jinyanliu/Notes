@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Notes</string>
+
+    <!-- The dummy note id data typed in just for design reason.
+    Used in list_item_note.xml -->
+    <string name="dummy_note_id">1</string>
+    <!-- The dummy note title data typed in just for design reason.
+    Used in list_item_note.xml -->
+    <string name="dummy_note_title">Jogging in park</string>
 </resources>
