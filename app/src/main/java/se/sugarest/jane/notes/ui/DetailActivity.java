@@ -20,6 +20,9 @@ import se.sugarest.jane.notes.R;
  * Created by jane on 17-10-18.
  */
 
+/**
+ * This activity is used for adding a new note, or editing and deleting an existing note.
+ */
 public class DetailActivity extends AppCompatActivity {
 
     private int mAddAndEditRecordNumber;
@@ -46,9 +49,11 @@ public class DetailActivity extends AppCompatActivity {
         mTitleEditText = (EditText) findViewById(R.id.et_note_title);
         mDescriptionEditText = (EditText) findViewById(R.id.et_note_description);
 
+        // Figure out it is an AddNoteDetailActivity or it is an EditNoteDetailActivity
         Intent intentThatStartedThisActivity = getIntent();
         if (intentThatStartedThisActivity != null) {
             if (intentThatStartedThisActivity.hasExtra("current_note_size")) {
+                // It is an AddNoteDetailActivity
                 setTitle(getString(R.string.set_detail_activity_title_add_a_note));
                 mAddAndEditRecordNumber = ADD_A_NOTE;
                 String currentNotesSize = getIntent().getExtras().getString("current_note_size");
@@ -56,6 +61,7 @@ public class DetailActivity extends AppCompatActivity {
                 mIdTextView.setText(String.valueOf(mNotePositionId));
             } else if (intentThatStartedThisActivity.hasExtra("note_object")
                     && intentThatStartedThisActivity.hasExtra("note_position")) {
+                // It is an EditAndDeleteNoteDetailActivity
                 setTitle(getString(R.string.set_detail_activity_title_edit_a_note));
                 mAddAndEditRecordNumber = EDIT_A_NOTE;
                 mNotePositionId = getIntent().getExtras().getInt("note_position") + 1;
@@ -68,6 +74,7 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
+    // When this activity is in the AddNoteMode, it makes no sense to have the delete menu item
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem deleteAction = menu.findItem(R.id.action_delete);
@@ -90,12 +97,15 @@ public class DetailActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_save:
                 if (mAddAndEditRecordNumber == ADD_A_NOTE) {
-                    createAndPostNote();
+                    // It is AddNoteMode
+                    createAndPostNewNote();
                 } else {
+                    // It is EditNoteMode
                     editAndPutCurrentNote();
                 }
                 return true;
             case R.id.action_delete:
+                // It is EditNoteMode, because in AddNoteMode, this delete item is invisible.
                 deleteCurrentNote();
                 return true;
             default:
@@ -120,8 +130,7 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
-    private void createAndPostNote() {
-
+    private void createAndPostNewNote() {
         String noteTitleString = mTitleEditText.getText().toString();
         String noteDescriptionString = mDescriptionEditText.getText().toString();
 
