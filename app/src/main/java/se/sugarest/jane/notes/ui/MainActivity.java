@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteA
     private RecyclerView mRecyclerView;
     private TextView mEmptyTextView;
     private NoteAdapter mNoteAdapter;
+    private int mNotesSize;
 
     public NoteAdapter getmNoteAdapter() {
         return mNoteAdapter;
@@ -25,6 +26,10 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteA
 
     public TextView getmEmptyTextView() {
         return mEmptyTextView;
+    }
+
+    public void setmNotesSize(int mNotesSize) {
+        this.mNotesSize = mNotesSize;
     }
 
     @Override
@@ -38,6 +43,9 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteA
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                // Pass current_note_size to detailActivity.
+                // When adding a new note, its id will be current_note_size + 1
+                intent.putExtra("current_note_size", String.valueOf(mNotesSize));
                 startActivity(intent);
             }
         });

@@ -51,5 +51,6 @@ public class FetchNotesTask extends AsyncTask<Void, Void, List<Note>> {
         } else {
             this.mainActivity.getmEmptyTextView().setVisibility(View.VISIBLE);
         }
+        this.mainActivity.setmNotesSize(notes.size());
     }
 }
