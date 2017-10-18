@@ -10,4 +10,23 @@
     <!-- The empty message shows up on the main screen if the data fetched back is empty.
     Used in activity_main.xml, initially invisible. -->
     <string name="empty_data">Yon don\'t have any notes yet.</string>
+
+    <!-- The label of note's id shows up on the detail screen.
+    Used in activity_detail.xml -->
+    <string name="note_id_label">Id: </string>
+    <!-- The label of note's title shows up on the detail screen.
+    Used in activity_detail.xml -->
+    <string name="note_title_label">Title: </string>
+    <!-- The label of note's decription shows up on the detail screen.
+    Used in activity_detail.xml -->
+    <string name="note_description_label">Description: </string>
+    <!-- The dummy data of note's id shows up on the detail screen.
+    Used in activity_detail.xml -->
+    <string name="note_id_dummy_data">3</string>
+    <!-- The dummy data of note's title shows up on the detail screen.
+    Used in activity_detail.xml -->
+    <string name="note_title_dummy_data">Study</string>
+    <!-- The dummy data of note's description shows up on the detail screen.
+    Used in activity_detail.xml -->
+    <string name="note_description_dummy_data">Swedish</string>
 </resources>
