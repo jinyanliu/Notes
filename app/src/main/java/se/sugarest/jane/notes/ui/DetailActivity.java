@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import se.sugarest.jane.notes.Note;
 import se.sugarest.jane.notes.PostNotesTask;
@@ -67,8 +68,12 @@ public class DetailActivity extends AppCompatActivity {
         String noteTitleString = mTitleEditText.getText().toString();
         String noteDescriptionString = mDescriptionEditText.getText().toString();
 
-        Note newNote = new Note(mNoteId, noteTitleString, noteDescriptionString);
-        new PostNotesTask(this).execute(newNote);
+        // Sanity check, title and description cannot be empty.
+        if (noteTitleString.isEmpty() || noteDescriptionString.isEmpty()) {
+            Toast.makeText(this, getString(R.string.toast_create_note_title_description_cannot_be_empty), Toast.LENGTH_SHORT).show();
+        } else {
+            Note newNote = new Note(mNoteId, noteTitleString, noteDescriptionString);
+            new PostNotesTask(this).execute(newNote);
+        }
     }
-
 }
