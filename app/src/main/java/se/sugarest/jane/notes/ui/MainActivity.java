@@ -46,7 +46,8 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteA
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, DetailActivity.class);
                 // Pass current_note_size to detailActivity.
-                // When adding a new note, its id will be current_note_size + 1
+                // When adding a new note, its id shows up in detail activity will be
+                // current_note_size + 1
                 intent.putExtra("current_note_size", String.valueOf(mNotesSize));
                 startActivity(intent);
             }
