@@ -25,10 +25,10 @@
     <string name="note_id_dummy_data">3</string>
     <!-- The dummy data of note's title shows up on the detail screen.
     Used in activity_detail.xml -->
-    <string name="note_title_dummy_data">Study</string>
+    <string name="note_title_dummy_data">Buy cheese and bread for breakfast.</string>
     <!-- The dummy data of note's description shows up on the detail screen.
     Used in activity_detail.xml -->
-    <string name="note_description_dummy_data">Swedish</string>
+    <string name="note_description_dummy_data">Needed for breakfast must be done by 8 am tomorrow!</string>
 
     <!-- Menu item title of action save on the menu bar of detail activity.
     Used in menu_detail_activity.xml -->
