@@ -10,17 +10,17 @@ package se.sugarest.jane.notes;
  */
 public class Note {
 
-    private String mNoteId;
+    private int mNoteId;
     private String mNoteTitle;
     private String mNoteDescription;
 
-    public Note (String noteId, String noteTitle, String noteDescription) {
+    public Note (int noteId, String noteTitle, String noteDescription) {
         mNoteId = noteId;
         mNoteTitle = noteTitle;
         mNoteDescription = noteDescription;
     }
 
-    public String getNoteId(){
+    public int getNoteId(){
         return mNoteId;
     }
 
@@ -35,7 +35,7 @@ public class Note {
     @Override
     public String toString() {
         return "Note{" +
-                "mNoteId='" + mNoteId + '\'' +
+                "mNoteId=" + mNoteId +
                 ", mNoteTitle='" + mNoteTitle + '\'' +
                 ", mNoteDescription='" + mNoteDescription + '\'' +
                 '}';
@@ -48,7 +48,7 @@ public class Note {
 
         Note note = (Note) o;
 
-        if (!mNoteId.equals(note.mNoteId)) return false;
+        if (mNoteId != note.mNoteId) return false;
         if (!mNoteTitle.equals(note.mNoteTitle)) return false;
         return mNoteDescription.equals(note.mNoteDescription);
 
@@ -56,7 +56,7 @@ public class Note {
 
     @Override
     public int hashCode() {
-        int result = mNoteId.hashCode();
+        int result = mNoteId;
         result = 31 * result + mNoteTitle.hashCode();
         result = 31 * result + mNoteDescription.hashCode();
         return result;

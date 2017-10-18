@@ -7,4 +7,7 @@
     <!-- The dummy note title data typed in just for design reason.
     Used in list_item_note.xml -->
     <string name="dummy_note_title">Jogging in park</string>
+    <!-- The empty message shows up on the main screen if the data fetched back is empty.
+    Used in activity_main.xml, initially invisible. -->
+    <string name="empty_data">Yon don\'t have any notes yet.</string>
 </resources>

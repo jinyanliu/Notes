@@ -52,7 +52,7 @@ public class NoteJsonUtils {
                 JSONObject currentNote = baseJsonArray.getJSONObject(i);
 
                 // Get the "id" key value String and store it in note_id variable.
-                String note_id = currentNote.getString("id");
+                int note_id = currentNote.getInt("id");
 
                 // Get the "title" key value String and store it in note_title variable.
                 String note_title = currentNote.getString("title");

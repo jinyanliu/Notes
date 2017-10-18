@@ -21,15 +21,13 @@ public class NetworkUtils {
 
     final static String TAG = NetworkUtils.class.getSimpleName();
 
-    final static String NOTES_BASE_URL = "https://timesheet-1172.appspot.com/cb7b02a7/notes";
-
     /**
      * Builds the URL used to query Notes API
      *
      * @return The URL to use to query the Notes API
      */
-    public static URL buildUrl() {
-        Uri builtUri = Uri.parse(NOTES_BASE_URL).buildUpon().build();
+    public static URL buildUrl(String noteUrl) {
+        Uri builtUri = Uri.parse(noteUrl).buildUpon().build();
         URL url = null;
         try {
             url = new URL(builtUri.toString());
