@@ -1,10 +1,17 @@
-package se.sugarest.jane.notes;
+package se.sugarest.jane.notes.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.TextView;
+
+import se.sugarest.jane.notes.FetchNotesTask;
+import se.sugarest.jane.notes.NoteAdapter;
+import se.sugarest.jane.notes.R;
 
 public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteAdapterOnClickHandler {
 
@@ -24,6 +31,16 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteA
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Setup FAB to open AddActivity
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, AddActivity.class);
+                startActivity(intent);
+            }
+        });
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 

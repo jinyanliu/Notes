@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="se.sugarest.jane.notes.MainActivity">
+    tools:context="se.sugarest.jane.notes.ui.MainActivity">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
@@ -16,7 +16,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/list_item_note" />
 
     <android.support.design.widget.FloatingActionButton
@@ -26,7 +26,6 @@
         android:layout_marginBottom="@dimen/activity_horizontal_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:onClick="onClick"
         android:src="@drawable/ic_add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

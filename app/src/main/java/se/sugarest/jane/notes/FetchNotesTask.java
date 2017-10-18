@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 
+import se.sugarest.jane.notes.ui.MainActivity;
 import se.sugarest.jane.notes.utilities.NetworkUtils;
 import se.sugarest.jane.notes.utilities.NoteJsonUtils;
 
