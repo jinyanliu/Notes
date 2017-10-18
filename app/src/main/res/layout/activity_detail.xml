@@ -23,7 +23,7 @@
         android:id="@+id/tv_note_id_dummy_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/note_id_dummy_data"
+        tools:text="@string/note_id_dummy_data"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_note_id_label"
         app:layout_constraintLeft_toLeftOf="@+id/tv_note_title_dummy_data"

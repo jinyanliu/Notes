@@ -29,4 +29,11 @@
     <!-- The dummy data of note's description shows up on the detail screen.
     Used in activity_detail.xml -->
     <string name="note_description_dummy_data">Swedish</string>
+
+    <!-- Menu item title of action save on the menu bar of detail activity.
+    Used in menu_detail_activity.xml -->
+    <string name="action_save">Save</string>
+    <!-- Menu item title of action delete on the menu bar of detail activity.
+    Used in menu_detail_activity.xml -->
+    <string name="action_delete">Delete</string>
 </resources>
