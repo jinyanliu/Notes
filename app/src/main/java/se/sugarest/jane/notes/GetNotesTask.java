@@ -16,16 +16,21 @@ import se.sugarest.jane.notes.utilities.NoteJsonUtils;
  * Created by jane on 17-10-18.
  */
 
-public class FetchNotesTask extends AsyncTask<Void, Void, List<Note>> {
+public class GetNotesTask extends AsyncTask<Void, Void, List<Note>> {
 
-    private final static String TAG = FetchNotesTask.class.getSimpleName();
+    private final static String TAG = GetNotesTask.class.getSimpleName();
 
-    final static String NOTES_BASE_URL = " https://timesheet-1172.appspot.com/cb7b02a7/notes";
+    final static String NOTES_BASE_URL = "https://timesheet-1172.appspot.com/cb7b02a7/notes";
 
     MainActivity mainActivity;
 
-    public FetchNotesTask(MainActivity mainActivity) {
+    public GetNotesTask(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
     }
 
     @Override

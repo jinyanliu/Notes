@@ -9,6 +9,8 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import se.sugarest.jane.notes.Note;
+import se.sugarest.jane.notes.PostNotesTask;
 import se.sugarest.jane.notes.R;
 
 /**
@@ -55,7 +57,6 @@ public class DetailActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_save:
                 createAndPostNote();
-                finish();
                 return true;
         }
         return true;
@@ -65,6 +66,9 @@ public class DetailActivity extends AppCompatActivity {
 
         String noteTitleString = mTitleEditText.getText().toString();
         String noteDescriptionString = mDescriptionEditText.getText().toString();
+
+        Note newNote = new Note(mNoteId, noteTitleString, noteDescriptionString);
+        new PostNotesTask(this).execute(newNote);
     }
 
 }

@@ -9,7 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import se.sugarest.jane.notes.FetchNotesTask;
+import se.sugarest.jane.notes.GetNotesTask;
 import se.sugarest.jane.notes.NoteAdapter;
 import se.sugarest.jane.notes.R;
 
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteA
 
         mRecyclerView.setAdapter(mNoteAdapter);
 
-        new FetchNotesTask(this).execute();
+        new GetNotesTask(this).execute();
     }
 
     @Override
