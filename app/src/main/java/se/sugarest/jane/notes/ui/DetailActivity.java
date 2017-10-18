@@ -59,8 +59,9 @@ public class DetailActivity extends AppCompatActivity {
             case R.id.action_save:
                 createAndPostNote();
                 return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return true;
     }
 
     private void createAndPostNote() {
