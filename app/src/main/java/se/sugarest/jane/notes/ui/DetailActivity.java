@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import se.sugarest.jane.notes.apiOperationTasks.DeleteNotesTask;
 import se.sugarest.jane.notes.apiOperationTasks.PutNotesTask;
 import se.sugarest.jane.notes.data.Note;
 import se.sugarest.jane.notes.apiOperationTasks.PostNotesTask;
@@ -32,7 +33,9 @@ public class DetailActivity extends AppCompatActivity {
 
     private EditText mDescriptionEditText;
 
-    private int mNoteId;
+    private int mNotePositionId;
+
+    private int mNoteSaveId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,19 +52,31 @@ public class DetailActivity extends AppCompatActivity {
                 setTitle(getString(R.string.set_detail_activity_title_add_a_note));
                 mAddAndEditRecordNumber = ADD_A_NOTE;
                 String currentNotesSize = getIntent().getExtras().getString("current_note_size");
-                mNoteId = Integer.parseInt(currentNotesSize) + 1;
-                mIdTextView.setText(String.valueOf(mNoteId));
+                mNotePositionId = Integer.parseInt(currentNotesSize) + 1;
+                mIdTextView.setText(String.valueOf(mNotePositionId));
             } else if (intentThatStartedThisActivity.hasExtra("note_object")
                     && intentThatStartedThisActivity.hasExtra("note_position")) {
                 setTitle(getString(R.string.set_detail_activity_title_edit_a_note));
                 mAddAndEditRecordNumber = EDIT_A_NOTE;
-                mNoteId = getIntent().getExtras().getInt("note_position") + 1;
-                mIdTextView.setText(String.valueOf(mNoteId));
+                mNotePositionId = getIntent().getExtras().getInt("note_position") + 1;
+                mIdTextView.setText(String.valueOf(mNotePositionId));
                 Note currentNote = (Note) getIntent().getExtras().getSerializable("note_object");
+                mNoteSaveId = currentNote.getNoteId();
                 mTitleEditText.setText(currentNote.getNoteTitle());
                 mDescriptionEditText.setText(currentNote.getNoteDescription());
             }
         }
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem deleteAction = menu.findItem(R.id.action_delete);
+        if (mAddAndEditRecordNumber == ADD_A_NOTE) {
+            deleteAction.setVisible(false);
+        } else {
+            deleteAction.setVisible(true);
+        }
+        return true;
     }
 
     @Override
@@ -80,9 +95,16 @@ public class DetailActivity extends AppCompatActivity {
                     editAndPutCurrentNote();
                 }
                 return true;
+            case R.id.action_delete:
+                deleteCurrentNote();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void deleteCurrentNote() {
+        new DeleteNotesTask(this).execute(mNoteSaveId);
     }
 
     private void editAndPutCurrentNote() {
@@ -91,9 +113,9 @@ public class DetailActivity extends AppCompatActivity {
 
         // Sanity check, title and description cannot be empty.
         if (noteTitleString.isEmpty() || noteDescriptionString.isEmpty()) {
-            Toast.makeText(this, getString(R.string.toast_create_note_title_description_cannot_be_empty), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.toast_update_note_title_description_cannot_be_empty), Toast.LENGTH_SHORT).show();
         } else {
-            Note newNote = new Note(mNoteId, noteTitleString, noteDescriptionString);
+            Note newNote = new Note(mNoteSaveId, noteTitleString, noteDescriptionString);
             new PutNotesTask(this).execute(newNote);
         }
     }
@@ -107,7 +129,7 @@ public class DetailActivity extends AppCompatActivity {
         if (noteTitleString.isEmpty() || noteDescriptionString.isEmpty()) {
             Toast.makeText(this, getString(R.string.toast_create_note_title_description_cannot_be_empty), Toast.LENGTH_SHORT).show();
         } else {
-            Note newNote = new Note(mNoteId, noteTitleString, noteDescriptionString);
+            Note newNote = new Note(mNotePositionId, noteTitleString, noteDescriptionString);
             new PostNotesTask(this).execute(newNote);
         }
     }

@@ -41,6 +41,10 @@
     providing description.
     Used in DetailActivity.java -->
     <string name="toast_create_note_title_description_cannot_be_empty">Please create a new note with title and description.</string>
+    <!-- Toast message pop up if a user wants to save an edited note without providing title or without
+    providing description.
+    Used in DetailActivity.java -->
+    <string name="toast_update_note_title_description_cannot_be_empty">Please update a new note with title and description.</string>
 
     <!-- setTitle for Detail Activity when adding a note.
     Used in DetailActivity.java -->
