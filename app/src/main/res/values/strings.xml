@@ -41,4 +41,11 @@
     providing description.
     Used in DetailActivity.java -->
     <string name="toast_create_note_title_description_cannot_be_empty">Please create a new note with title and description.</string>
+
+    <!-- setTitle for Detail Activity when adding a note.
+    Used in DetailActivity.java -->
+    <string name="set_detail_activity_title_add_a_note">Add a note</string>
+    <!-- setTitle for Detail Activity when editing a note.
+    Used in DetailActivity.java -->
+    <string name="set_detail_activity_title_edit_a_note">Edit a note</string>
 </resources>

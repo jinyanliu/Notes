@@ -1,4 +1,4 @@
-package se.sugarest.jane.notes;
+package se.sugarest.jane.notes.apiOperationTasks;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 
+import se.sugarest.jane.notes.data.Note;
 import se.sugarest.jane.notes.ui.MainActivity;
 import se.sugarest.jane.notes.utilities.NetworkUtils;
 import se.sugarest.jane.notes.utilities.NoteJsonUtils;

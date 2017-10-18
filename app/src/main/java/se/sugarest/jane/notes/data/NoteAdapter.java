@@ -1,4 +1,4 @@
-package se.sugarest.jane.notes;
+package se.sugarest.jane.notes.data;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +10,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import se.sugarest.jane.notes.R;
+
 /**
  * Created by jane on 17-10-18.
  */
@@ -19,6 +21,10 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteAdapterVie
     private final NoteAdapterOnClickHandler mClickHandler;
 
     private ArrayList<Note> mNoteObjects = new ArrayList<>();
+
+    public ArrayList<Note> getmNoteObjects() {
+        return mNoteObjects;
+    }
 
     /**
      * Creates a NoteAdapter.
@@ -64,7 +70,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteAdapterVie
     public void onBindViewHolder(NoteAdapterViewHolder holder, int position) {
         holder.mNoteIdTextView.setVisibility(View.VISIBLE);
         holder.mNoteTitleTextView.setVisibility(View.VISIBLE);
-        holder.mNoteIdTextView.setText(String.valueOf(mNoteObjects.get(position).getNoteId()));
+        holder.mNoteIdTextView.setText(String.valueOf(position + 1));
         holder.mNoteTitleTextView.setText(mNoteObjects.get(position).getNoteTitle());
     }
 
@@ -86,7 +92,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteAdapterVie
      * The interface that receives onClick messages.
      */
     public interface NoteAdapterOnClickHandler {
-        void onClick(String noteId);
+        void onClick(int notePostision);
 
     }
 
@@ -104,9 +110,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteAdapterVie
         @Override
         public void onClick(View v) {
             int adapterPositon = getAdapterPosition();
-            mClickHandler.onClick(String.valueOf(adapterPositon));
+            mClickHandler.onClick(adapterPositon);
         }
     }
-
-
 }

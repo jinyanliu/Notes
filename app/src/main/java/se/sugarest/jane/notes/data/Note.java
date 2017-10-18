@@ -1,14 +1,16 @@
-package se.sugarest.jane.notes;
+package se.sugarest.jane.notes.data;
 
 /**
  * Created by jane on 17-10-18.
  */
 
+import java.io.Serializable;
+
 /**
  * Represents a Note.
  * It contains the note id and the note title.
  */
-public class Note {
+public class Note implements Serializable {
 
     private int mNoteId;
     private String mNoteTitle;

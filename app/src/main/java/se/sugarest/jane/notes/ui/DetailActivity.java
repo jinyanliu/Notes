@@ -10,8 +10,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import se.sugarest.jane.notes.Note;
-import se.sugarest.jane.notes.PostNotesTask;
+import se.sugarest.jane.notes.apiOperationTasks.PutNotesTask;
+import se.sugarest.jane.notes.data.Note;
+import se.sugarest.jane.notes.apiOperationTasks.PostNotesTask;
 import se.sugarest.jane.notes.R;
 
 /**
@@ -19,6 +20,11 @@ import se.sugarest.jane.notes.R;
  */
 
 public class DetailActivity extends AppCompatActivity {
+
+    private int mAddAndEditRecordNumber;
+
+    private static final int ADD_A_NOTE = 100;
+    private static final int EDIT_A_NOTE = 200;
 
     private TextView mIdTextView;
 
@@ -40,9 +46,20 @@ public class DetailActivity extends AppCompatActivity {
         Intent intentThatStartedThisActivity = getIntent();
         if (intentThatStartedThisActivity != null) {
             if (intentThatStartedThisActivity.hasExtra("current_note_size")) {
+                setTitle(getString(R.string.set_detail_activity_title_add_a_note));
+                mAddAndEditRecordNumber = ADD_A_NOTE;
                 String currentNotesSize = getIntent().getExtras().getString("current_note_size");
                 mNoteId = Integer.parseInt(currentNotesSize) + 1;
                 mIdTextView.setText(String.valueOf(mNoteId));
+            } else if (intentThatStartedThisActivity.hasExtra("note_object")
+                    && intentThatStartedThisActivity.hasExtra("note_position")) {
+                setTitle(getString(R.string.set_detail_activity_title_edit_a_note));
+                mAddAndEditRecordNumber = EDIT_A_NOTE;
+                mNoteId = getIntent().getExtras().getInt("note_position") + 1;
+                mIdTextView.setText(String.valueOf(mNoteId));
+                Note currentNote = (Note) getIntent().getExtras().getSerializable("note_object");
+                mTitleEditText.setText(currentNote.getNoteTitle());
+                mDescriptionEditText.setText(currentNote.getNoteDescription());
             }
         }
     }
@@ -57,10 +74,27 @@ public class DetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_save:
-                createAndPostNote();
+                if (mAddAndEditRecordNumber == ADD_A_NOTE) {
+                    createAndPostNote();
+                } else {
+                    editAndPutCurrentNote();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void editAndPutCurrentNote() {
+        String noteTitleString = mTitleEditText.getText().toString();
+        String noteDescriptionString = mDescriptionEditText.getText().toString();
+
+        // Sanity check, title and description cannot be empty.
+        if (noteTitleString.isEmpty() || noteDescriptionString.isEmpty()) {
+            Toast.makeText(this, getString(R.string.toast_create_note_title_description_cannot_be_empty), Toast.LENGTH_SHORT).show();
+        } else {
+            Note newNote = new Note(mNoteId, noteTitleString, noteDescriptionString);
+            new PutNotesTask(this).execute(newNote);
         }
     }
 

@@ -14,7 +14,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import se.sugarest.jane.notes.Note;
+import se.sugarest.jane.notes.data.Note;
 
 /**
  * Utility functions to handle Notes JSON data.

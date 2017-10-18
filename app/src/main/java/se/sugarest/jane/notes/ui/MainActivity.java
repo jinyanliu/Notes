@@ -1,5 +1,6 @@
 package se.sugarest.jane.notes.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -9,9 +10,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import se.sugarest.jane.notes.GetNotesTask;
-import se.sugarest.jane.notes.NoteAdapter;
 import se.sugarest.jane.notes.R;
+import se.sugarest.jane.notes.apiOperationTasks.GetNotesTask;
+import se.sugarest.jane.notes.data.Note;
+import se.sugarest.jane.notes.data.NoteAdapter;
 
 public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteAdapterOnClickHandler {
 
@@ -69,8 +71,18 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteA
         new GetNotesTask(this).execute();
     }
 
+    /**
+     * This method is overridden by the MainActivity class in order to handle RecyclerView item
+     * clicks.
+     */
     @Override
-    public void onClick(String noteId) {
-
+    public void onClick(int notePosition) {
+        Note currentClickedNote = mNoteAdapter.getmNoteObjects().get(notePosition);
+        Context context = this;
+        Class destinationClass = DetailActivity.class;
+        Intent intentToStartDetailActivity = new Intent(context, destinationClass);
+        intentToStartDetailActivity.putExtra("note_object", currentClickedNote);
+        intentToStartDetailActivity.putExtra("note_position", notePosition);
+        startActivity(intentToStartDetailActivity);
     }
 }
