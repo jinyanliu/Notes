@@ -8,34 +8,47 @@ import java.io.Serializable;
 
 public class Note implements Serializable {
 
-    private int mNoteId;
-    private String mNoteTitle;
-    private String mNoteDescription;
+    // To use Retrofit to parse JSON response, fields name here must be the same as the title in JSON.
+    private int id;
+    private String title;
+    private String description;
 
     public Note(int noteId, String noteTitle, String noteDescription) {
-        mNoteId = noteId;
-        mNoteTitle = noteTitle;
-        mNoteDescription = noteDescription;
+        id = noteId;
+        title = noteTitle;
+        description = noteDescription;
     }
 
-    public int getNoteId() {
-        return mNoteId;
+    public int getId() {
+        return id;
     }
 
-    public String getNoteTitle() {
-        return mNoteTitle;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getNoteDescription() {
-        return mNoteDescription;
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override
     public String toString() {
         return "Note{" +
-                "mNoteId=" + mNoteId +
-                ", mNoteTitle='" + mNoteTitle + '\'' +
-                ", mNoteDescription='" + mNoteDescription + '\'' +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
                 '}';
     }
 
@@ -46,17 +59,16 @@ public class Note implements Serializable {
 
         Note note = (Note) o;
 
-        if (mNoteId != note.mNoteId) return false;
-        if (!mNoteTitle.equals(note.mNoteTitle)) return false;
-        return mNoteDescription.equals(note.mNoteDescription);
-
+        if (id != note.id) return false;
+        if (!title.equals(note.title)) return false;
+        return description.equals(note.description);
     }
 
     @Override
     public int hashCode() {
-        int result = mNoteId;
-        result = 31 * result + mNoteTitle.hashCode();
-        result = 31 * result + mNoteDescription.hashCode();
+        int result = id;
+        result = 31 * result + title.hashCode();
+        result = 31 * result + description.hashCode();
         return result;
     }
 }

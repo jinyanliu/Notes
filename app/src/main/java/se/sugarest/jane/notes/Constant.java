@@ -5,5 +5,5 @@ package se.sugarest.jane.notes;
  */
 
 public class Constant {
-    public final static String NOTES_BASE_URL = "https://timesheet-1172.appspot.com/cb7b02a7/notes";
+    public final static String NOTES_BASE_URL = "https://timesheet-1172.appspot.com/";
 }

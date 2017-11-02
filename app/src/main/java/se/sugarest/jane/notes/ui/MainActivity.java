@@ -7,15 +7,28 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.util.List;
+
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import se.sugarest.jane.notes.NotesClient;
 import se.sugarest.jane.notes.R;
-import se.sugarest.jane.notes.apiOperationTasks.GetNotesTask;
 import se.sugarest.jane.notes.data.Note;
 import se.sugarest.jane.notes.data.NoteAdapter;
 
+import static se.sugarest.jane.notes.Constant.NOTES_BASE_URL;
+
 public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteAdapterOnClickHandler {
+    private final static String LOG_TAG = MainActivity.class.getSimpleName();
 
     private RecyclerView mRecyclerView;
     private TextView mEmptyTextView;
@@ -53,23 +66,48 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteA
             }
         });
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-
         mEmptyTextView = (TextView) findViewById(R.id.tv_empty_view);
+        setUpRecyclerViewWithAdapter();
 
+        // new GetNotesTask(this).execute();
+
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+
+        Retrofit.Builder builder =
+                new Retrofit.Builder()
+                        .baseUrl(NOTES_BASE_URL)
+                        .addConverterFactory(GsonConverterFactory.create());
+
+        Retrofit retrofit = builder.client(httpClient.build()).build();
+
+        NotesClient client = retrofit.create(NotesClient.class);
+        Call<List<Note>> call = client.notes();
+
+        call.enqueue(new Callback<List<Note>>() {
+            @Override
+            public void onResponse(Call<List<Note>> call, Response<List<Note>> response) {
+                Log.i(LOG_TAG, "Complete url to request is: " + response.raw().request().url().toString());
+                Log.i(LOG_TAG, "response.body().toString == " + response.body().toString());
+                List<Note> notesList = response.body();
+                mNoteAdapter.setNotesData(notesList);
+            }
+
+            @Override
+            public void onFailure(Call<List<Note>> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Request notes list failed!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void setUpRecyclerViewWithAdapter() {
+        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-
         mRecyclerView.setLayoutManager(layoutManager);
-
         mRecyclerView.setHasFixedSize(true);
-
         if (mNoteAdapter == null) {
             mNoteAdapter = new NoteAdapter(this);
         }
-
         mRecyclerView.setAdapter(mNoteAdapter);
-
-        new GetNotesTask(this).execute();
     }
 
     /**

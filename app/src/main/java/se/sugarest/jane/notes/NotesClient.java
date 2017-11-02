@@ -11,6 +11,6 @@ import se.sugarest.jane.notes.data.Note;
  */
 
 public interface NotesClient {
-    @GET
+    @GET("/cb7b02a7/notes")
     Call<List<Note>> notes();
 }

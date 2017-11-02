@@ -67,9 +67,9 @@ public class DetailActivity extends AppCompatActivity {
                 mNotePositionId = getIntent().getExtras().getInt("note_position") + 1;
                 mIdTextView.setText(String.valueOf(mNotePositionId));
                 Note currentNote = (Note) getIntent().getExtras().getSerializable("note_object");
-                mNoteSaveId = currentNote.getNoteId();
-                mTitleEditText.setText(currentNote.getNoteTitle());
-                mDescriptionEditText.setText(currentNote.getNoteDescription());
+                mNoteSaveId = currentNote.getId();
+                mTitleEditText.setText(currentNote.getTitle());
+                mDescriptionEditText.setText(currentNote.getDescription());
             }
         }
     }

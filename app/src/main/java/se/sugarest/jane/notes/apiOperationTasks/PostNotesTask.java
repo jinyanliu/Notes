@@ -55,9 +55,9 @@ public class PostNotesTask extends AsyncTask<Note, Void, Note> {
             httpURLConnection.connect();
 
             JSONObject jsonParam = new JSONObject();
-            jsonParam.put("id", createNote.getNoteId());
-            jsonParam.put("title", createNote.getNoteTitle());
-            jsonParam.put("description", createNote.getNoteDescription());
+            jsonParam.put("id", createNote.getId());
+            jsonParam.put("title", createNote.getTitle());
+            jsonParam.put("description", createNote.getDescription());
 
             DataOutputStream os = new DataOutputStream(httpURLConnection.getOutputStream());
             os.writeBytes(jsonParam.toString());

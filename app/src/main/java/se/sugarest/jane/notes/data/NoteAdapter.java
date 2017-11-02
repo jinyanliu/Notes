@@ -67,7 +67,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteAdapterVie
         holder.mNoteIdTextView.setVisibility(View.VISIBLE);
         holder.mNoteTitleTextView.setVisibility(View.VISIBLE);
         holder.mNoteIdTextView.setText(String.valueOf(position + 1));
-        holder.mNoteTitleTextView.setText(mNoteObjects.get(position).getNoteTitle());
+        holder.mNoteTitleTextView.setText(mNoteObjects.get(position).getTitle());
     }
 
     /**

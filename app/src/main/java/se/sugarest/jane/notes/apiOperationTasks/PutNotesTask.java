@@ -43,7 +43,7 @@ public class PutNotesTask extends AsyncTask<Note, Void, Note> {
         Note noteToPut = params[0];
 
         // URL to call
-        int noteId = noteToPut.getNoteId();
+        int noteId = noteToPut.getId();
         String noteIdToAdd = "/" + String.valueOf(noteId);
         URL noteRequestUrl = NetworkUtils.buildUrl(NOTES_BASE_URL + noteIdToAdd);
 
@@ -57,9 +57,9 @@ public class PutNotesTask extends AsyncTask<Note, Void, Note> {
             httpURLConnection.connect();
 
             JSONObject jsonParam = new JSONObject();
-            jsonParam.put("id", noteToPut.getNoteId());
-            jsonParam.put("title", noteToPut.getNoteTitle());
-            jsonParam.put("description", noteToPut.getNoteDescription());
+            jsonParam.put("id", noteToPut.getId());
+            jsonParam.put("title", noteToPut.getTitle());
+            jsonParam.put("description", noteToPut.getDescription());
 
             DataOutputStream os = new DataOutputStream(httpURLConnection.getOutputStream());
             os.writeBytes(jsonParam.toString());
