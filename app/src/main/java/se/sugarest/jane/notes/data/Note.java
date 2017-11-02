@@ -6,31 +6,27 @@ package se.sugarest.jane.notes.data;
 
 import java.io.Serializable;
 
-/**
- * Represents a Note.
- * It contains the note id and the note title.
- */
 public class Note implements Serializable {
 
     private int mNoteId;
     private String mNoteTitle;
     private String mNoteDescription;
 
-    public Note (int noteId, String noteTitle, String noteDescription) {
+    public Note(int noteId, String noteTitle, String noteDescription) {
         mNoteId = noteId;
         mNoteTitle = noteTitle;
         mNoteDescription = noteDescription;
     }
 
-    public int getNoteId(){
+    public int getNoteId() {
         return mNoteId;
     }
 
-    public String getNoteTitle(){
+    public String getNoteTitle() {
         return mNoteTitle;
     }
 
-    public String getNoteDescription(){
+    public String getNoteDescription() {
         return mNoteDescription;
     }
 
