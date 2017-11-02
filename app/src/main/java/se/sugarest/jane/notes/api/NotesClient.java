@@ -1,4 +1,4 @@
-package se.sugarest.jane.notes;
+package se.sugarest.jane.notes.api;
 
 import java.util.List;
 

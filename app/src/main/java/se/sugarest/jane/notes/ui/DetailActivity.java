@@ -10,10 +10,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import se.sugarest.jane.notes.apiOperationTasks.DeleteNotesTask;
-import se.sugarest.jane.notes.apiOperationTasks.PutNotesTask;
+import se.sugarest.jane.notes.api.DeleteNotesTask;
+import se.sugarest.jane.notes.api.PutNotesTask;
 import se.sugarest.jane.notes.data.Note;
-import se.sugarest.jane.notes.apiOperationTasks.PostNotesTask;
+import se.sugarest.jane.notes.api.PostNotesTask;
 import se.sugarest.jane.notes.R;
 
 /**

@@ -1,4 +1,4 @@
-package se.sugarest.jane.notes.apiOperationTasks;
+package se.sugarest.jane.notes.api;
 
 import android.content.Intent;
 import android.os.AsyncTask;

@@ -20,7 +20,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import se.sugarest.jane.notes.NotesClient;
+import se.sugarest.jane.notes.api.NotesClient;
 import se.sugarest.jane.notes.R;
 import se.sugarest.jane.notes.data.Note;
 import se.sugarest.jane.notes.data.NoteAdapter;
@@ -35,65 +35,43 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteA
     private NoteAdapter mNoteAdapter;
     private int mNotesSize;
 
-    public NoteAdapter getmNoteAdapter() {
-        return mNoteAdapter;
-    }
-
-    public TextView getmEmptyTextView() {
-        return mEmptyTextView;
-    }
-
-    public void setmNotesSize(int mNotesSize) {
-        this.mNotesSize = mNotesSize;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Setup FAB to open DetailActivity
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-                // Pass current_note_size to detailActivity.
-                // When adding a new note, its id shows up in detail activity will be
-                // current_note_size + 1
-                intent.putExtra("current_note_size", String.valueOf(mNotesSize));
-                startActivity(intent);
-            }
-        });
-
         mEmptyTextView = (TextView) findViewById(R.id.tv_empty_view);
+
+        setUpFabButtonOnClick();
         setUpRecyclerViewWithAdapter();
+        setUpRetrofitGet();
+    }
 
-        // new GetNotesTask(this).execute();
-
+    private void setUpRetrofitGet() {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-
         Retrofit.Builder builder =
                 new Retrofit.Builder()
                         .baseUrl(NOTES_BASE_URL)
                         .addConverterFactory(GsonConverterFactory.create());
 
         Retrofit retrofit = builder.client(httpClient.build()).build();
-
         NotesClient client = retrofit.create(NotesClient.class);
         Call<List<Note>> call = client.notes();
-
         call.enqueue(new Callback<List<Note>>() {
             @Override
             public void onResponse(Call<List<Note>> call, Response<List<Note>> response) {
+                showRecyclerView();
                 Log.i(LOG_TAG, "Complete url to request is: " + response.raw().request().url().toString());
                 Log.i(LOG_TAG, "response.body().toString == " + response.body().toString());
                 List<Note> notesList = response.body();
                 mNoteAdapter.setNotesData(notesList);
+                mNotesSize = notesList.size();
             }
 
             @Override
             public void onFailure(Call<List<Note>> call, Throwable t) {
+                showEmptyView();
+                mNotesSize = 0;
                 Toast.makeText(MainActivity.this, "Request notes list failed!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -111,8 +89,27 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteA
     }
 
     /**
+     * Opens DetailActivity. Add a new note.
+     */
+    private void setUpFabButtonOnClick() {
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                // Pass current_note_size to detailActivity.
+                // When adding a new note, its id shows up in detail activity will be
+                // current_note_size + 1
+                intent.putExtra("current_note_size", String.valueOf(mNotesSize));
+                startActivity(intent);
+            }
+        });
+    }
+
+    /**
      * This method is overridden by the MainActivity class in order to handle RecyclerView item
      * clicks.
+     * Edit an existing note.
      */
     @Override
     public void onClick(int notePosition) {
@@ -123,5 +120,15 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteA
         intentToStartDetailActivity.putExtra("note_object", currentClickedNote);
         intentToStartDetailActivity.putExtra("note_position", notePosition);
         startActivity(intentToStartDetailActivity);
+    }
+
+    private void showRecyclerView() {
+        mRecyclerView.setVisibility(View.VISIBLE);
+        mEmptyTextView.setVisibility(View.INVISIBLE);
+    }
+
+    private void showEmptyView() {
+        mRecyclerView.setVisibility(View.INVISIBLE);
+        mEmptyTextView.setVisibility(View.VISIBLE);
     }
 }
