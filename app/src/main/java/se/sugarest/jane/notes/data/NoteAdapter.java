@@ -19,9 +19,7 @@ import se.sugarest.jane.notes.R;
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteAdapterViewHolder> {
 
     private final NoteAdapterOnClickHandler mClickHandler;
-
     private ArrayList<Note> mNoteObjects = new ArrayList<>();
-
     public ArrayList<Note> getmNoteObjects() {
         return mNoteObjects;
     }
@@ -50,9 +48,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteAdapterVie
         Context context = viewGroup.getContext();
         int layoutIdForListItem = R.layout.list_item_note;
         LayoutInflater inflater = LayoutInflater.from(context);
-        boolean shouldAttachToParentImmediately = false;
-
-        View view = inflater.inflate(layoutIdForListItem, viewGroup, shouldAttachToParentImmediately);
+        View view = inflater.inflate(layoutIdForListItem, viewGroup, false);
         return new NoteAdapterViewHolder(view);
     }
 

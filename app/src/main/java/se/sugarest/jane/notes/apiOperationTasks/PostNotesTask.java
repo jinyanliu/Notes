@@ -15,6 +15,9 @@ import se.sugarest.jane.notes.ui.DetailActivity;
 import se.sugarest.jane.notes.ui.MainActivity;
 import se.sugarest.jane.notes.utilities.NetworkUtils;
 
+import static se.sugarest.jane.notes.Constant.NOTES_BASE_URL;
+
+
 /**
  * Created by jane on 17-10-18.
  */
@@ -22,8 +25,6 @@ import se.sugarest.jane.notes.utilities.NetworkUtils;
 public class PostNotesTask extends AsyncTask<Note, Void, Note> {
 
     private final static String TAG = PostNotesTask.class.getSimpleName();
-
-    final static String NOTES_BASE_URL = "https://timesheet-1172.appspot.com/cb7b02a7/notes";
 
     DetailActivity detailActivity;
 
