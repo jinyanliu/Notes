@@ -43,10 +43,10 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteA
 
         setUpFabButtonOnClick();
         setUpRecyclerViewWithAdapter();
-        setUpRetrofitGet();
+        sendNetworkRequestGet();
     }
 
-    private void setUpRetrofitGet() {
+    private void sendNetworkRequestGet() {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         Retrofit.Builder builder =
                 new Retrofit.Builder()
