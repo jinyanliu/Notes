@@ -60,8 +60,9 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteA
             @Override
             public void onResponse(Call<List<Note>> call, Response<List<Note>> response) {
                 showRecyclerView();
-                Log.i(LOG_TAG, "Complete url to request is: " + response.raw().request().url().toString());
-                Log.i(LOG_TAG, "response.body().toString == " + response.body().toString());
+                Log.i(LOG_TAG, "GET response success: Complete url to request is: "
+                        + response.raw().request().url().toString()
+                        + "\nresponse.body().toString == " + response.body().toString());
                 List<Note> notesList = response.body();
                 mNoteAdapter.setNotesData(notesList);
                 mNotesSize = notesList.size();
@@ -69,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteA
 
             @Override
             public void onFailure(Call<List<Note>> call, Throwable t) {
+                Log.i(LOG_TAG, "GET response failure.");
                 showEmptyView();
                 mNotesSize = 0;
             }
