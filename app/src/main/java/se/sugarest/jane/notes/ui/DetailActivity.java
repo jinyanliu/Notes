@@ -4,17 +4,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import se.sugarest.jane.notes.R;
 import se.sugarest.jane.notes.api.DeleteNotesTask;
+import se.sugarest.jane.notes.api.PostNotesTask;
 import se.sugarest.jane.notes.api.PutNotesTask;
 import se.sugarest.jane.notes.data.type.Note;
-import se.sugarest.jane.notes.api.PostNotesTask;
-import se.sugarest.jane.notes.R;
 
 import static se.sugarest.jane.notes.util.Constant.ADD_A_NOTE;
 import static se.sugarest.jane.notes.util.Constant.EDIT_A_NOTE;
@@ -34,6 +35,7 @@ public class DetailActivity extends AppCompatActivity {
     private EditText mDescriptionEditText;
     private int mNotePositionId;
     private int mNoteSaveId;
+    private Toast mToast;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -118,7 +120,12 @@ public class DetailActivity extends AppCompatActivity {
 
         // Sanity check, title and description cannot be empty.
         if (noteTitleString.isEmpty() || noteDescriptionString.isEmpty()) {
-            Toast.makeText(this, getString(R.string.toast_update_note_title_description_cannot_be_empty), Toast.LENGTH_SHORT).show();
+            if (mToast != null) {
+                mToast.cancel();
+            }
+            mToast = Toast.makeText(this, getString(R.string.toast_update_note_title_description_cannot_be_empty), Toast.LENGTH_SHORT);
+            mToast.setGravity(Gravity.BOTTOM, 0, 0);
+            mToast.show();
         } else {
             Note newNote = new Note(mNoteSaveId, noteTitleString, noteDescriptionString);
             new PutNotesTask(this).execute(newNote);
@@ -131,7 +138,12 @@ public class DetailActivity extends AppCompatActivity {
 
         // Sanity check, title and description cannot be empty.
         if (noteTitleString.isEmpty() || noteDescriptionString.isEmpty()) {
-            Toast.makeText(this, getString(R.string.toast_create_note_title_description_cannot_be_empty), Toast.LENGTH_SHORT).show();
+            if (mToast != null) {
+                mToast.cancel();
+            }
+            mToast = Toast.makeText(this, getString(R.string.toast_create_note_title_description_cannot_be_empty), Toast.LENGTH_SHORT);
+            mToast.setGravity(Gravity.BOTTOM, 0, 0);
+            mToast.show();
         } else {
             Note newNote = new Note(mNotePositionId, noteTitleString, noteDescriptionString);
             new PostNotesTask(this).execute(newNote);
