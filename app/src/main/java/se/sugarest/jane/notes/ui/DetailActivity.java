@@ -173,7 +173,8 @@ public class DetailActivity extends AppCompatActivity {
                 Log.i(LOG_TAG, "POST response success: Complete url to request is: "
                         + response.raw().request().url().toString()
                         + "\nresponse.body().toString == " + response.body().toString());
-
+                Intent intent = new Intent(DetailActivity.this, MainActivity.class);
+                startActivity(intent);
             }
 
             @Override

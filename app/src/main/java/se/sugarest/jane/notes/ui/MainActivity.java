@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -64,6 +66,12 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteA
                         + response.raw().request().url().toString()
                         + "\nresponse.body().toString == " + response.body().toString());
                 List<Note> notesList = response.body();
+                Collections.sort(notesList, new Comparator<Note>() {
+                    @Override
+                    public int compare(Note o1, Note o2) {
+                        return o1.getId() - o2.getId();
+                    }
+                });
                 mNoteAdapter.setNotesData(notesList);
                 mNotesSize = notesList.size();
             }
