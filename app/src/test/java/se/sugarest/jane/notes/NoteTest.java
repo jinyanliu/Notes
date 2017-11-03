@@ -11,9 +11,6 @@ import se.sugarest.jane.notes.data.Note;
  * Created by jane on 17-10-18.
  */
 
-/**
- * A note object data test.
- */
 public class NoteTest {
 
     private int id = 18;
@@ -31,16 +28,16 @@ public class NoteTest {
 
     @Test
     public void getIdTest() throws Exception {
-        Assert.assertEquals(id, note.getNoteId());
+        Assert.assertEquals(id, note.getId());
     }
 
     @Test
     public void getTitleTest() throws Exception {
-        Assert.assertEquals(title, note.getNoteTitle());
+        Assert.assertEquals(title, note.getTitle());
     }
 
     @Test
     public void getDescriptionTest() throws Exception {
-        Assert.assertEquals(description, note.getNoteDescription());
+        Assert.assertEquals(description, note.getDescription());
     }
 }

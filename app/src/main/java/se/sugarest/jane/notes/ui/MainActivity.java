@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -20,8 +19,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import se.sugarest.jane.notes.api.NotesClient;
 import se.sugarest.jane.notes.R;
+import se.sugarest.jane.notes.api.NotesClient;
 import se.sugarest.jane.notes.data.Note;
 import se.sugarest.jane.notes.data.NoteAdapter;
 
@@ -72,7 +71,6 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteA
             public void onFailure(Call<List<Note>> call, Throwable t) {
                 showEmptyView();
                 mNotesSize = 0;
-                Toast.makeText(MainActivity.this, "Request notes list failed!", Toast.LENGTH_SHORT).show();
             }
         });
     }
