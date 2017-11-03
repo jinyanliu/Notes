@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import se.sugarest.jane.notes.R;
+import se.sugarest.jane.notes.data.type.Note;
 
 /**
  * Created by jane on 17-10-18.

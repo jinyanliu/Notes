@@ -10,12 +10,12 @@ import java.io.DataOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import se.sugarest.jane.notes.data.Note;
+import se.sugarest.jane.notes.data.type.Note;
 import se.sugarest.jane.notes.ui.DetailActivity;
 import se.sugarest.jane.notes.ui.MainActivity;
-import se.sugarest.jane.notes.utilities.NetworkUtils;
+import se.sugarest.jane.notes.util.NetworkUtils;
 
-import static se.sugarest.jane.notes.Constant.NOTES_BASE_URL;
+import static se.sugarest.jane.notes.util.Constant.NOTES_BASE_URL;
 
 
 /**

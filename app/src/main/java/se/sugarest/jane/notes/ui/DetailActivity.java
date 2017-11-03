@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import se.sugarest.jane.notes.api.DeleteNotesTask;
 import se.sugarest.jane.notes.api.PutNotesTask;
-import se.sugarest.jane.notes.data.Note;
+import se.sugarest.jane.notes.data.type.Note;
 import se.sugarest.jane.notes.api.PostNotesTask;
 import se.sugarest.jane.notes.R;
 

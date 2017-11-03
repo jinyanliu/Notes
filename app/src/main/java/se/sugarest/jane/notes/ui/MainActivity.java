@@ -21,10 +21,10 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import se.sugarest.jane.notes.R;
 import se.sugarest.jane.notes.api.NotesClient;
-import se.sugarest.jane.notes.data.Note;
+import se.sugarest.jane.notes.data.type.Note;
 import se.sugarest.jane.notes.data.NoteAdapter;
 
-import static se.sugarest.jane.notes.Constant.NOTES_BASE_URL;
+import static se.sugarest.jane.notes.util.Constant.NOTES_BASE_URL;
 
 public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteAdapterOnClickHandler {
     private final static String LOG_TAG = MainActivity.class.getSimpleName();

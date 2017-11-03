@@ -5,7 +5,7 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import se.sugarest.jane.notes.data.Note;
+import se.sugarest.jane.notes.data.type.Note;
 
 /**
  * Created by jane on 17-10-18.

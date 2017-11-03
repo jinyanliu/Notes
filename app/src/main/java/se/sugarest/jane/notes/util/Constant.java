@@ -1,4 +1,4 @@
-package se.sugarest.jane.notes;
+package se.sugarest.jane.notes.util;
 
 /**
  * Created by jane on 17-11-2.

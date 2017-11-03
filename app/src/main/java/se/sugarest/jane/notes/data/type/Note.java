@@ -1,4 +1,4 @@
-package se.sugarest.jane.notes.data;
+package se.sugarest.jane.notes.data.type;
 
 /**
  * Created by jane on 17-10-18.
