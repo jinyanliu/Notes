@@ -6,11 +6,13 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import se.sugarest.jane.notes.data.Note;
 
+import static se.sugarest.jane.notes.Constant.NOTES_API_END_POINT;
+
 /**
  * Created by jane on 17-11-2.
  */
 
 public interface NotesClient {
-    @GET("/cb7b02a7/notes")
+    @GET(NOTES_API_END_POINT)
     Call<List<Note>> notes();
 }
