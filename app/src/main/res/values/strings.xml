@@ -48,7 +48,7 @@
     <!-- Toast message pop up on main screen if the POST method with Retrofit get onFailure callback,
     which means save new note failed.
     Used in DetailActivity.java -->
-    <string name="toast_retrofit_post_on_failure">Something went wrong.:( Please try again.</string>
+    <string name="toast_retrofit_post_put_on_failure">Something went wrong.:( Save failed. Please try again.</string>
 
     <!-- setTitle for Detail Activity when adding a note.
     Used in DetailActivity.java -->

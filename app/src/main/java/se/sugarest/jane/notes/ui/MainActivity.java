@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteA
                         + response.raw().request().url().toString()
                         + "\nresponse.body().toString == " + response.body().toString());
                 List<Note> notesList = response.body();
+                // Sort notes order via id.
                 Collections.sort(notesList, new Comparator<Note>() {
                     @Override
                     public int compare(Note o1, Note o2) {

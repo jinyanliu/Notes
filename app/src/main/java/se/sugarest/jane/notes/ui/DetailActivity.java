@@ -20,7 +20,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import se.sugarest.jane.notes.R;
 import se.sugarest.jane.notes.api.DeleteNotesTask;
 import se.sugarest.jane.notes.api.NotesClient;
-import se.sugarest.jane.notes.api.PutNotesTask;
 import se.sugarest.jane.notes.data.type.Note;
 
 import static se.sugarest.jane.notes.util.Constant.ADD_A_NOTE;
@@ -135,8 +134,8 @@ public class DetailActivity extends AppCompatActivity {
             mToast.setGravity(Gravity.BOTTOM, 0, 0);
             mToast.show();
         } else {
-            Note newNote = new Note(mNoteSaveId, noteTitleString, noteDescriptionString);
-            new PutNotesTask(this).execute(newNote);
+            Note newNote = new Note(noteTitleString, noteDescriptionString);
+            sendNetworkRequestPut(mNoteSaveId, newNote);
         }
     }
 
@@ -154,7 +153,6 @@ public class DetailActivity extends AppCompatActivity {
             mToast.show();
         } else {
             Note newNote = new Note(noteTitleString, noteDescriptionString);
-            // new PostNotesTask(this).execute(newNote);
             sendNetworkRequestPost(newNote);
         }
     }
@@ -163,7 +161,6 @@ public class DetailActivity extends AppCompatActivity {
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(NOTES_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create());
-
         Retrofit retrofit = builder.build();
         NotesClient client = retrofit.create(NotesClient.class);
         Call<Note> call = client.createNote(note);
@@ -183,10 +180,41 @@ public class DetailActivity extends AppCompatActivity {
                 if (mToast != null) {
                     mToast.cancel();
                 }
-                mToast = Toast.makeText(DetailActivity.this, getString(R.string.toast_retrofit_post_on_failure), Toast.LENGTH_SHORT);
+                mToast = Toast.makeText(DetailActivity.this, getString(R.string.toast_retrofit_post_put_on_failure), Toast.LENGTH_SHORT);
                 mToast.setGravity(Gravity.BOTTOM, 0, 0);
                 mToast.show();
             }
         });
+    }
+
+    private void sendNetworkRequestPut(int id, Note note) {
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .baseUrl(NOTES_BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create());
+        Retrofit retrofit = builder.build();
+        NotesClient client = retrofit.create(NotesClient.class);
+        Call<Note> call = client.updateNote(id, note);
+        call.enqueue(new Callback<Note>() {
+            @Override
+            public void onResponse(Call<Note> call, Response<Note> response) {
+                Log.i(LOG_TAG, "PUT response success: Complete url to request is: "
+                        + response.raw().request().url().toString()
+                        + "\nresponse.body().toString == " + response.body().toString());
+                Intent intent = new Intent(DetailActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(Call<Note> call, Throwable t) {
+                Log.i(LOG_TAG, "PUT response failure.");
+                if (mToast != null) {
+                    mToast.cancel();
+                }
+                mToast = Toast.makeText(DetailActivity.this, getString(R.string.toast_retrofit_post_put_on_failure), Toast.LENGTH_SHORT);
+                mToast.setGravity(Gravity.BOTTOM, 0, 0);
+                mToast.show();
+            }
+        });
+
     }
 }
