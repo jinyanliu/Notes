@@ -13,12 +13,6 @@ public class Note implements Serializable {
     private String title;
     private String description;
 
-    public Note(int noteId, String noteTitle, String noteDescription) {
-        id = noteId;
-        title = noteTitle;
-        description = noteDescription;
-    }
-
     public Note(String noteTitle, String noteDescription) {
         title = noteTitle;
         description = noteDescription;
