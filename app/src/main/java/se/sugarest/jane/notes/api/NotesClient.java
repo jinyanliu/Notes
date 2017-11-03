@@ -18,7 +18,7 @@ import static se.sugarest.jane.notes.util.Constant.NOTES_API_SLASH;
  */
 public interface NotesClient {
     @GET(NOTES_API_END_POINT)
-    Call<List<Note>> notes();
+    Call<List<Note>> getNotes();
 
     @POST(NOTES_API_END_POINT)
     Call<Note> createNote(@Body Note note);

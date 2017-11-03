@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteA
 
         Retrofit retrofit = builder.client(httpClient.build()).build();
         NotesClient client = retrofit.create(NotesClient.class);
-        Call<List<Note>> call = client.notes();
+        Call<List<Note>> call = client.getNotes();
         call.enqueue(new Callback<List<Note>>() {
             @Override
             public void onResponse(Call<List<Note>> call, Response<List<Note>> response) {
