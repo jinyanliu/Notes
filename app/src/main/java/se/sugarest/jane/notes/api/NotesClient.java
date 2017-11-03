@@ -4,6 +4,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -14,6 +15,9 @@ import static se.sugarest.jane.notes.util.Constant.NOTES_API_END_POINT;
 import static se.sugarest.jane.notes.util.Constant.NOTES_API_SLASH;
 
 /**
+ * This interface will be used with external lib Retrofit.
+ * Reference: https://github.com/square/retrofit
+ * <p>
  * Created by jane on 17-11-2.
  */
 public interface NotesClient {
@@ -27,4 +31,7 @@ public interface NotesClient {
     Call<Note> updateNote(
             @Path("id") int id,
             @Body Note Note);
+
+    @DELETE(NOTES_API_END_POINT + NOTES_API_SLASH + "{id}")
+    Call<Void> deleteNote(@Path("id") int id);
 }

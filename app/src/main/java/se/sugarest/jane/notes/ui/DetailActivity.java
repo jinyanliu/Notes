@@ -18,7 +18,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import se.sugarest.jane.notes.R;
-import se.sugarest.jane.notes.api.DeleteNotesTask;
 import se.sugarest.jane.notes.api.NotesClient;
 import se.sugarest.jane.notes.data.type.Note;
 
@@ -118,7 +117,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void deleteCurrentNote() {
-        new DeleteNotesTask(this).execute(mNoteSaveId);
+        sendNetworkRequestDelete(mNoteSaveId);
     }
 
     private void editAndPutCurrentNote() {
@@ -215,6 +214,35 @@ public class DetailActivity extends AppCompatActivity {
                 mToast.show();
             }
         });
+    }
 
+    private void sendNetworkRequestDelete(int id) {
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .baseUrl(NOTES_BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create());
+        Retrofit retrofit = builder.build();
+        NotesClient client = retrofit.create(NotesClient.class);
+        Call<Void> call = client.deleteNote(id);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                Log.i(LOG_TAG, "DELETE response success: Complete url to request is: "
+                        + response.raw().request().url().toString()
+                        + "\nresponse.code() == " + response.code());
+                Intent intent = new Intent(DetailActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.i(LOG_TAG, "DELETE response failure.");
+                if (mToast != null) {
+                    mToast.cancel();
+                }
+                mToast = Toast.makeText(DetailActivity.this, getString(R.string.toast_retrofit_delete_on_failure), Toast.LENGTH_SHORT);
+                mToast.setGravity(Gravity.BOTTOM, 0, 0);
+                mToast.show();
+            }
+        });
     }
 }
