@@ -16,6 +16,9 @@ import se.sugarest.jane.notes.data.type.Note;
 import se.sugarest.jane.notes.api.PostNotesTask;
 import se.sugarest.jane.notes.R;
 
+import static se.sugarest.jane.notes.util.Constant.ADD_A_NOTE;
+import static se.sugarest.jane.notes.util.Constant.EDIT_A_NOTE;
+
 /**
  * Created by jane on 17-10-18.
  */
@@ -26,18 +29,10 @@ import se.sugarest.jane.notes.R;
 public class DetailActivity extends AppCompatActivity {
 
     private int mAddAndEditRecordNumber;
-
-    private static final int ADD_A_NOTE = 100;
-    private static final int EDIT_A_NOTE = 200;
-
     private TextView mIdTextView;
-
     private EditText mTitleEditText;
-
     private EditText mDescriptionEditText;
-
     private int mNotePositionId;
-
     private int mNoteSaveId;
 
     @Override
