@@ -37,14 +37,18 @@
     Used in menu_detail_activity.xml -->
     <string name="action_delete">Delete</string>
 
-    <!-- Toast message pop up if a user wants to save a note without providing title or without
-    providing description.
+    <!-- Toast message pop up on detail view if a user wants to save a note without providing title
+    or without providing description.
     Used in DetailActivity.java -->
     <string name="toast_create_note_title_description_cannot_be_empty">Please create a new note with title and description.</string>
-    <!-- Toast message pop up if a user wants to save an edited note without providing title or without
-    providing description.
+    <!-- Toast message pop up on detail view if a user wants to save an edited note without
+    providing title or without providing description.
     Used in DetailActivity.java -->
     <string name="toast_update_note_title_description_cannot_be_empty">Please update a new note with title and description.</string>
+    <!-- Toast message pop up on main screen if the POST method with Retrofit get onFailure callback,
+    which means save new note failed.
+    Used in DetailActivity.java -->
+    <string name="toast_retrofit_post_on_failure">Something went wrong.:( Please try again.</string>
 
     <!-- setTitle for Detail Activity when adding a note.
     Used in DetailActivity.java -->

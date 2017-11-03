@@ -19,6 +19,11 @@ public class Note implements Serializable {
         description = noteDescription;
     }
 
+    public Note(String noteTitle, String noteDescription) {
+        title = noteTitle;
+        description = noteDescription;
+    }
+
     public int getId() {
         return id;
     }

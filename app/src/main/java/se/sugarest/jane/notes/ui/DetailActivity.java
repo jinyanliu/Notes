@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,14 +12,20 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import se.sugarest.jane.notes.R;
 import se.sugarest.jane.notes.api.DeleteNotesTask;
-import se.sugarest.jane.notes.api.PostNotesTask;
+import se.sugarest.jane.notes.api.NotesClient;
 import se.sugarest.jane.notes.api.PutNotesTask;
 import se.sugarest.jane.notes.data.type.Note;
 
 import static se.sugarest.jane.notes.util.Constant.ADD_A_NOTE;
 import static se.sugarest.jane.notes.util.Constant.EDIT_A_NOTE;
+import static se.sugarest.jane.notes.util.Constant.NOTES_BASE_URL;
 
 /**
  * Created by jane on 17-10-18.
@@ -28,6 +35,7 @@ import static se.sugarest.jane.notes.util.Constant.EDIT_A_NOTE;
  * This activity is used for adding a new note, or editing and deleting an existing note.
  */
 public class DetailActivity extends AppCompatActivity {
+    private static final String LOG_TAG = DetailActivity.class.getSimpleName();
 
     private int mAddAndEditRecordNumber;
     private TextView mIdTextView;
@@ -145,8 +153,39 @@ public class DetailActivity extends AppCompatActivity {
             mToast.setGravity(Gravity.BOTTOM, 0, 0);
             mToast.show();
         } else {
-            Note newNote = new Note(mNotePositionId, noteTitleString, noteDescriptionString);
-            new PostNotesTask(this).execute(newNote);
+            Note newNote = new Note(noteTitleString, noteDescriptionString);
+            // new PostNotesTask(this).execute(newNote);
+            sendNetworkRequestPost(newNote);
         }
+    }
+
+    private void sendNetworkRequestPost(Note note) {
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .baseUrl(NOTES_BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create());
+
+        Retrofit retrofit = builder.build();
+        NotesClient client = retrofit.create(NotesClient.class);
+        Call<Note> call = client.createNote(note);
+        call.enqueue(new Callback<Note>() {
+            @Override
+            public void onResponse(Call<Note> call, Response<Note> response) {
+                Log.i(LOG_TAG, "POST response success: Complete url to request is: "
+                        + response.raw().request().url().toString()
+                        + "\nresponse.body().toString == " + response.body().toString());
+
+            }
+
+            @Override
+            public void onFailure(Call<Note> call, Throwable t) {
+                Log.i(LOG_TAG, "POST response failure.");
+                if (mToast != null) {
+                    mToast.cancel();
+                }
+                mToast = Toast.makeText(DetailActivity.this, getString(R.string.toast_retrofit_post_on_failure), Toast.LENGTH_SHORT);
+                mToast.setGravity(Gravity.BOTTOM, 0, 0);
+                mToast.show();
+            }
+        });
     }
 }
