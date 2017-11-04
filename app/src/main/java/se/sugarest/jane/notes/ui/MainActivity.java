@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteA
 
             @Override
             public void onFailure(Call<List<Note>> call, Throwable t) {
-                Log.e(LOG_TAG, "GET response failure.", t);
+                Log.e(LOG_TAG, "Failed to get notes list data back.", t);
                 if (mToast != null) {
                     mToast.cancel();
                 }

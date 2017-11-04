@@ -93,7 +93,7 @@ public class DetailActivity extends AppCompatActivity {
 
     // Use External Library Retrofit to GET ONE note data, according to note id.
     // Reference: https://github.com/square/retrofit
-    private void sendNetworkRequestGetOneNote(int id) {
+    private void sendNetworkRequestGetOneNote(final int id) {
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(NOTES_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create());
@@ -113,7 +113,7 @@ public class DetailActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Note> call, Throwable t) {
-                Log.e(LOG_TAG, "GET ONE response failure.", t);
+                Log.e(LOG_TAG, "Failed to get note data back with id: " + id, t);
                 if (mToast != null) {
                     mToast.cancel();
                 }
@@ -170,7 +170,7 @@ public class DetailActivity extends AppCompatActivity {
 
     // Use External Library Retrofit to DELETE existing note data, according to note id.
     // Reference: https://github.com/square/retrofit
-    private void sendNetworkRequestDelete(int id) {
+    private void sendNetworkRequestDelete(final int id) {
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(NOTES_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create());
@@ -188,7 +188,7 @@ public class DetailActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Log.e(LOG_TAG, "DELETE response failure.", t);
+                Log.e(LOG_TAG, "Failed to delete note data with id: " + id, t);
                 if (mToast != null) {
                     mToast.cancel();
                 }
@@ -218,7 +218,7 @@ public class DetailActivity extends AppCompatActivity {
 
     // Use External Library Retrofit to PUT existing note data, according to note id.
     // Reference: https://github.com/square/retrofit
-    private void sendNetworkRequestPut(int id, Note note) {
+    private void sendNetworkRequestPut(final int id, Note note) {
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(NOTES_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create());
@@ -236,7 +236,7 @@ public class DetailActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Note> call, Throwable t) {
-                Log.e(LOG_TAG, "PUT response failure.", t);
+                Log.e(LOG_TAG, "Failed to update note data with id: " + id, t);
                 if (mToast != null) {
                     mToast.cancel();
                 }
@@ -266,7 +266,7 @@ public class DetailActivity extends AppCompatActivity {
 
     // Use External Library Retrofit to POST new note data.
     // Reference: https://github.com/square/retrofit
-    private void sendNetworkRequestPost(Note note) {
+    private void sendNetworkRequestPost(final Note note) {
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(NOTES_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create());
@@ -284,7 +284,7 @@ public class DetailActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Note> call, Throwable t) {
-                Log.e(LOG_TAG, "POST response failure.", t);
+                Log.e(LOG_TAG, "Failed to create new note data: " + note.toString(), t);
                 if (mToast != null) {
                     mToast.cancel();
                 }
