@@ -25,10 +25,8 @@ import static org.hamcrest.Matchers.notNullValue;
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class MainActivityAndroidTest {
-
     @Rule
-    public IntentsTestRule<MainActivity> intentsTestRule =
-            new IntentsTestRule<>(MainActivity.class);
+    public IntentsTestRule<MainActivity> intentsTestRule = new IntentsTestRule<>(MainActivity.class);
 
     @Test
     public void triggerIntentTest() {
