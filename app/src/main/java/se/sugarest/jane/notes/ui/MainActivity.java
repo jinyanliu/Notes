@@ -51,6 +51,12 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteA
         sendNetworkRequestGet();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        sendNetworkRequestGet();
+    }
+
     private void sendNetworkRequestGet() {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         Retrofit.Builder builder =
