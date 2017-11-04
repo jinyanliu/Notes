@@ -22,10 +22,9 @@ import static org.hamcrest.Matchers.notNullValue;
 /**
  * Created by jane on 17-10-18.
  */
-
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class MainActivityTest {
+public class MainActivityAndroidTest {
 
     @Rule
     public IntentsTestRule<MainActivity> intentsTestRule =
