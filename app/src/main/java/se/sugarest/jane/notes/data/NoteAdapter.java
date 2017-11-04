@@ -14,13 +14,18 @@ import se.sugarest.jane.notes.R;
 import se.sugarest.jane.notes.data.type.Note;
 
 /**
+ * This class gets a list of note objects from inputs, retrieves the corresponding fields of each
+ * note object, and then populates to related views.
+ * <p>
+ * That means the controller in the MVC pattern.
+ * <p>
  * Created by jane on 17-10-18.
  */
-
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteAdapterViewHolder> {
-
+    // An On-click handler to make it easy for MainActivity to interface with the RecyclerView
     private final NoteAdapterOnClickHandler mClickHandler;
     private ArrayList<Note> mNoteObjects = new ArrayList<>();
+
     public ArrayList<Note> getmNoteObjects() {
         return mNoteObjects;
     }
@@ -72,13 +77,16 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteAdapterVie
     }
 
     /**
-     * This method simply returns the number of items to display.
+     * @return The number of items to display.
      */
     @Override
     public int getItemCount() {
         return mNoteObjects.size();
     }
 
+    /**
+     * This method is used to set the notes data on a NoteAdapter
+     */
     public void setNotesData(List<Note> notesList) {
         mNoteObjects.clear();
         mNoteObjects.addAll(notesList);
@@ -89,10 +97,13 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteAdapterVie
      * The interface that receives onClick messages.
      */
     public interface NoteAdapterOnClickHandler {
-        void onClick(int notePostision);
+        void onClick(int notePosition);
 
     }
 
+    /**
+     * Cache of the children views for a note
+     */
     public class NoteAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final TextView mNoteIdTextView;
         public final TextView mNoteTitleTextView;
