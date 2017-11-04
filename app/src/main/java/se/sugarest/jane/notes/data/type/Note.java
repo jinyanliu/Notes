@@ -3,10 +3,7 @@ package se.sugarest.jane.notes.data.type;
 /**
  * Created by jane on 17-10-18.
  */
-
-import java.io.Serializable;
-
-public class Note implements Serializable {
+public class Note {
 
     // To use Retrofit to parse JSON response, fields name here must be the same as the title in JSON.
     private int id;
@@ -40,34 +37,5 @@ public class Note implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    @Override
-    public String toString() {
-        return "Note{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Note note = (Note) o;
-
-        if (id != note.id) return false;
-        if (!title.equals(note.title)) return false;
-        return description.equals(note.description);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id;
-        result = 31 * result + title.hashCode();
-        result = 31 * result + description.hashCode();
-        return result;
     }
 }

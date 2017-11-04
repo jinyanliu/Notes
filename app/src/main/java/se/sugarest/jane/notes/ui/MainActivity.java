@@ -8,8 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -23,8 +25,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import se.sugarest.jane.notes.R;
 import se.sugarest.jane.notes.api.NotesClient;
-import se.sugarest.jane.notes.data.type.Note;
 import se.sugarest.jane.notes.data.NoteAdapter;
+import se.sugarest.jane.notes.data.type.Note;
 
 import static se.sugarest.jane.notes.util.Constant.NOTES_BASE_URL;
 
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteA
     private TextView mEmptyTextView;
     private NoteAdapter mNoteAdapter;
     private int mNotesSize;
+    private Toast mToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,12 +78,20 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteA
                 });
                 mNoteAdapter.setNotesData(notesList);
                 mNotesSize = notesList.size();
+                if (mNotesSize == 0) {
+                    showEmptyView();
+                }
             }
 
             @Override
             public void onFailure(Call<List<Note>> call, Throwable t) {
                 Log.i(LOG_TAG, "GET response failure.");
-                showEmptyView();
+                if (mToast != null) {
+                    mToast.cancel();
+                }
+                mToast = Toast.makeText(MainActivity.this, getString(R.string.toast_retrofit_delete_on_failure), Toast.LENGTH_SHORT);
+                mToast.setGravity(Gravity.BOTTOM, 0, 0);
+                mToast.show();
                 mNotesSize = 0;
             }
         });
@@ -126,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteA
         Context context = this;
         Class destinationClass = DetailActivity.class;
         Intent intentToStartDetailActivity = new Intent(context, destinationClass);
-        intentToStartDetailActivity.putExtra("note_object", currentClickedNote);
+        intentToStartDetailActivity.putExtra("note_id", currentClickedNote.getId());
         intentToStartDetailActivity.putExtra("note_position", notePosition);
         startActivity(intentToStartDetailActivity);
     }

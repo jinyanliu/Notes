@@ -42,6 +42,7 @@ public class DetailActivity extends AppCompatActivity {
     private int mNotePositionId;
     private int mNoteSaveId;
     private Toast mToast;
+    private Note mCurrentNote;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,17 +63,17 @@ public class DetailActivity extends AppCompatActivity {
                 String currentNotesSize = getIntent().getExtras().getString("current_note_size");
                 mNotePositionId = Integer.parseInt(currentNotesSize) + 1;
                 mIdTextView.setText(String.valueOf(mNotePositionId));
-            } else if (intentThatStartedThisActivity.hasExtra("note_object")
+            } else if (intentThatStartedThisActivity.hasExtra("note_id")
                     && intentThatStartedThisActivity.hasExtra("note_position")) {
                 // It is an EditAndDeleteNoteDetailActivity
                 setTitle(getString(R.string.set_detail_activity_title_edit_a_note));
                 mAddAndEditRecordNumber = EDIT_A_NOTE;
                 mNotePositionId = getIntent().getExtras().getInt("note_position") + 1;
                 mIdTextView.setText(String.valueOf(mNotePositionId));
-                Note currentNote = (Note) getIntent().getExtras().getSerializable("note_object");
-                mNoteSaveId = currentNote.getId();
-                mTitleEditText.setText(currentNote.getTitle());
-                mDescriptionEditText.setText(currentNote.getDescription());
+                mNoteSaveId = getIntent().getExtras().getInt("note_id");
+
+                sendNetworkRequestGetOneNote(mNoteSaveId);
+
             }
         }
     }
@@ -240,6 +241,37 @@ public class DetailActivity extends AppCompatActivity {
                     mToast.cancel();
                 }
                 mToast = Toast.makeText(DetailActivity.this, getString(R.string.toast_retrofit_delete_on_failure), Toast.LENGTH_SHORT);
+                mToast.setGravity(Gravity.BOTTOM, 0, 0);
+                mToast.show();
+            }
+        });
+    }
+
+    private void sendNetworkRequestGetOneNote(int id) {
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .baseUrl(NOTES_BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create());
+        Retrofit retrofit = builder.build();
+        NotesClient client = retrofit.create(NotesClient.class);
+        Call<Note> call = client.getOneNoteById(id);
+        call.enqueue(new Callback<Note>() {
+            @Override
+            public void onResponse(Call<Note> call, Response<Note> response) {
+                Log.i(LOG_TAG, "GET ONE response success: Complete url to request is: "
+                        + response.raw().request().url().toString()
+                        + "\nresponse.code() == " + response.code());
+                mCurrentNote = response.body();
+                mTitleEditText.setText(mCurrentNote.getTitle());
+                mDescriptionEditText.setText(mCurrentNote.getDescription());
+            }
+
+            @Override
+            public void onFailure(Call<Note> call, Throwable t) {
+                Log.i(LOG_TAG, "GET ONE response failure.");
+                if (mToast != null) {
+                    mToast.cancel();
+                }
+                mToast = Toast.makeText(DetailActivity.this, getString(R.string.toast_retrofit_get_on_failure), Toast.LENGTH_SHORT);
                 mToast.setGravity(Gravity.BOTTOM, 0, 0);
                 mToast.show();
             }

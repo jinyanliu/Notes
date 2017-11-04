@@ -24,6 +24,9 @@ public interface NotesClient {
     @GET(NOTES_API_END_POINT)
     Call<List<Note>> getNotes();
 
+    @GET(NOTES_API_END_POINT + NOTES_API_SLASH + "{id}")
+    Call<Note> getOneNoteById(@Path("id") int id);
+
     @POST(NOTES_API_END_POINT)
     Call<Note> createNote(@Body Note note);
 

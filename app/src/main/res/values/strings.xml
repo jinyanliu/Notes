@@ -53,6 +53,10 @@
     which means delete existing note failed.
     Used in DetailActivity.java -->
     <string name="toast_retrofit_delete_on_failure">Something went wrong.:( Delete failed. Please try again.</string>
+    <!-- Toast message pop up on main/detail screen if the GET(list of notes or one note) method with
+    Retrofit get onFailure callback, which means get notes/one note failed.
+    Used in MainActivity.java and DetailActivity.java -->
+    <string name="toast_retrofit_get_on_failure">Something went wrong.:( Please try again.</string>
 
     <!-- setTitle for Detail Activity when adding a note.
     Used in DetailActivity.java -->
