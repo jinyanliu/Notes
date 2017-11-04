@@ -29,5 +29,4 @@
         app:layout_constraintLeft_toRightOf="@+id/tv_id"
         app:layout_constraintStart_toEndOf="@+id/tv_id"
         tools:text="@string/dummy_note_title" />
-
 </android.support.constraint.ConstraintLayout>
