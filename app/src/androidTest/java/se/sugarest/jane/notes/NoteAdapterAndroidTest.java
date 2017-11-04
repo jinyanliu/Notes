@@ -30,12 +30,14 @@ public class NoteAdapterAndroidTest {
     @Test
     public void getItemCountTest_oneNote() throws Exception {
         int oneNoteId = 0;
-        String oneNoteTitle = "Jogging in park";
+        String oneNoteTitle = "Jogging in park.";
         String oneNoteDescription = "At least 10 miles is the goal";
         Note oneNote = new Note(oneNoteTitle, oneNoteDescription);
         oneNote.setId(oneNoteId);
+
         notesList.add(oneNote);
         noteAdapter.setNotesData(notesList);
+
         Assert.assertEquals(1, noteAdapter.getItemCount());
     }
 
@@ -46,14 +48,17 @@ public class NoteAdapterAndroidTest {
         String firstNoteDescription = "At least 10 miles is the goal";
         Note firstNote = new Note(firstNoteTitle, firstNoteDescription);
         firstNote.setId(firstNoteId);
+
         int secondNoteId = 1;
         String secondNoteTitle = "Buy cheese and bread for breakfast.";
         String secondNoteDescription = "Needed for breakfast must be done by 8 am tomorrow!";
         Note secondNote = new Note(secondNoteTitle, secondNoteDescription);
         secondNote.setId(secondNoteId);
+
         notesList.add(firstNote);
         notesList.add(secondNote);
         noteAdapter.setNotesData(notesList);
+
         Assert.assertEquals(2, noteAdapter.getItemCount());
     }
 }

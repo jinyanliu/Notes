@@ -73,14 +73,17 @@ public class DetailActivity extends AppCompatActivity {
             setTitle(getString(R.string.set_detail_activity_title_add_a_note));
             mAddAndEditRecordNumber = ADD_A_NOTE;
             String currentNotesSize = getIntent().getExtras().getString(INTENT_CURRENT_NOTE_SIZE_TITLE);
+            // positionId starts from 1, instead of 0
             mNotePositionId = Integer.parseInt(currentNotesSize) + 1;
             mIdTextView.setText(String.valueOf(mNotePositionId));
+            return;
         }
         if (intentThatStartedThisActivity.hasExtra(INTENT_NOTE_ID_TITLE)
                 && intentThatStartedThisActivity.hasExtra(INTENT_NOTE_POSITION_TITLE)) {
             // It is an EditNoteActivity
             setTitle(getString(R.string.set_detail_activity_title_edit_a_note));
             mAddAndEditRecordNumber = EDIT_A_NOTE;
+            // positionId starts from 1, instead of 0
             mNotePositionId = getIntent().getExtras().getInt(INTENT_NOTE_POSITION_TITLE) + 1;
             mIdTextView.setText(String.valueOf(mNotePositionId));
             mNoteSaveId = getIntent().getExtras().getInt(INTENT_NOTE_ID_TITLE);
@@ -110,7 +113,7 @@ public class DetailActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Note> call, Throwable t) {
-                Log.i(LOG_TAG, "GET ONE response failure.");
+                Log.e(LOG_TAG, "GET ONE response failure.", t);
                 if (mToast != null) {
                     mToast.cancel();
                 }
@@ -185,7 +188,7 @@ public class DetailActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Log.i(LOG_TAG, "DELETE response failure.");
+                Log.e(LOG_TAG, "DELETE response failure.", t);
                 if (mToast != null) {
                     mToast.cancel();
                 }
@@ -233,7 +236,7 @@ public class DetailActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Note> call, Throwable t) {
-                Log.i(LOG_TAG, "PUT response failure.");
+                Log.e(LOG_TAG, "PUT response failure.", t);
                 if (mToast != null) {
                     mToast.cancel();
                 }
@@ -281,7 +284,7 @@ public class DetailActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Note> call, Throwable t) {
-                Log.i(LOG_TAG, "POST response failure.");
+                Log.e(LOG_TAG, "POST response failure.", t);
                 if (mToast != null) {
                     mToast.cancel();
                 }

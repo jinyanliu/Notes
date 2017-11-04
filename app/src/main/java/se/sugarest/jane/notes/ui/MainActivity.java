@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteA
 
             @Override
             public void onFailure(Call<List<Note>> call, Throwable t) {
-                Log.i(LOG_TAG, "GET response failure.");
+                Log.e(LOG_TAG, "GET response failure.", t);
                 if (mToast != null) {
                     mToast.cancel();
                 }
@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteA
                 Intent intent = new Intent(MainActivity.this, DetailActivity.class);
                 // Pass current_note_size to detailActivity.
                 // When adding a new note, its id shows up in detail activity will be
-                // current_note_size + 1
+                // current_note_size + 1, because positionId starts from 1, not from 0.
                 intent.putExtra(INTENT_CURRENT_NOTE_SIZE_TITLE, String.valueOf(mNotesSize));
                 startActivity(intent);
             }

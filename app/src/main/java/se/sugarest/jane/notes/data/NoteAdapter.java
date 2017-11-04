@@ -14,15 +14,15 @@ import se.sugarest.jane.notes.R;
 import se.sugarest.jane.notes.data.type.Note;
 
 /**
- * This class gets a list of note objects from inputs, retrieves the corresponding fields of each
- * note object, and then populates to related views.
+ * This class gets a list of note objects from inputs(e.g., MainActivity), retrieves the
+ * corresponding fields of each note object(e.g., from NotesAPI), and then populates to related views.
  * <p>
  * That means the controller in the MVC pattern.
  * <p>
  * Created by jane on 17-10-18.
  */
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteAdapterViewHolder> {
-    // An On-click handler to make it easy for MainActivity to interface with the RecyclerView
+    // An On-click handler to make it easy for MainActivity to interact with the RecyclerView
     private final NoteAdapterOnClickHandler mClickHandler;
     private ArrayList<Note> mNoteObjects = new ArrayList<>();
 
@@ -72,7 +72,9 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteAdapterVie
     public void onBindViewHolder(NoteAdapterViewHolder holder, int position) {
         holder.mNoteIdTextView.setVisibility(View.VISIBLE);
         holder.mNoteTitleTextView.setVisibility(View.VISIBLE);
-        holder.mNoteIdTextView.setText(String.valueOf(position + 1));
+        // indexOnUI starts from 1, instead of 0
+        String indexOnUI = String.valueOf(position + 1);
+        holder.mNoteIdTextView.setText(indexOnUI);
         holder.mNoteTitleTextView.setText(mNoteObjects.get(position).getTitle());
     }
 
@@ -117,8 +119,8 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteAdapterVie
 
         @Override
         public void onClick(View v) {
-            int adapterPositon = getAdapterPosition();
-            mClickHandler.onClick(adapterPositon);
+            int adapterPosition = getAdapterPosition();
+            mClickHandler.onClick(adapterPosition);
         }
     }
 }

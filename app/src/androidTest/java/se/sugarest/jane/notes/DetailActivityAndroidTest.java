@@ -24,7 +24,6 @@ import static org.hamcrest.Matchers.notNullValue;
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class DetailActivityAndroidTest {
-
     @Rule
     public ActivityTestRule<DetailActivity> mActivityTestRule = new ActivityTestRule<>(DetailActivity.class);
 
