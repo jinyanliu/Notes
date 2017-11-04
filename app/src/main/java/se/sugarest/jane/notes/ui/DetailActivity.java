@@ -88,6 +88,8 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
+    // Use External Library Retrofit to GET ONE note data, according to note id.
+    // Reference: https://github.com/square/retrofit
     private void sendNetworkRequestGetOneNote(int id) {
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(NOTES_BASE_URL)
@@ -163,6 +165,8 @@ public class DetailActivity extends AppCompatActivity {
         sendNetworkRequestDelete(mNoteSaveId);
     }
 
+    // Use External Library Retrofit to DELETE existing note data, according to note id.
+    // Reference: https://github.com/square/retrofit
     private void sendNetworkRequestDelete(int id) {
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(NOTES_BASE_URL)
@@ -209,6 +213,8 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
+    // Use External Library Retrofit to PUT existing note data, according to note id.
+    // Reference: https://github.com/square/retrofit
     private void sendNetworkRequestPut(int id, Note note) {
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(NOTES_BASE_URL)
@@ -255,6 +261,8 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
+    // Use External Library Retrofit to POST new note data.
+    // Reference: https://github.com/square/retrofit
     private void sendNetworkRequestPost(Note note) {
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(NOTES_BASE_URL)

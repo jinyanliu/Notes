@@ -32,6 +32,10 @@ import static se.sugarest.jane.notes.util.Constant.INTENT_NOTE_ID_TITLE;
 import static se.sugarest.jane.notes.util.Constant.INTENT_NOTE_POSITION_TITLE;
 import static se.sugarest.jane.notes.util.Constant.NOTES_BASE_URL;
 
+/**
+ * This is the main controller of the whole app.
+ * It initiates the app and switches between activities, e.g., MainActivity itself and DetailActivity.
+ */
 public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteAdapterOnClickHandler {
     private final static String LOG_TAG = MainActivity.class.getSimpleName();
 
@@ -53,12 +57,18 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteA
         sendNetworkRequestGet();
     }
 
+    /**
+     * Call finish() in DetailActivity after performing create/update/delete, override onStart()
+     * method in MainActivity to GET the up-to-date notes list.
+     */
     @Override
     protected void onStart() {
         super.onStart();
         sendNetworkRequestGet();
     }
 
+    // Use External Library Retrofit to GET notes list.
+    // Reference: https://github.com/square/retrofit
     private void sendNetworkRequestGet() {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         Retrofit.Builder builder =
@@ -117,9 +127,7 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteA
         mRecyclerView.setAdapter(mNoteAdapter);
     }
 
-    /**
-     * Opens DetailActivity. Add a new note.
-     */
+    // To open DetailActivity, add a new note
     private void setUpFabButtonOnClick() {
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -136,9 +144,9 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteA
     }
 
     /**
-     * This method is overridden by the MainActivity class in order to handle RecyclerView item
-     * clicks.
-     * Edit an existing note.
+     * This method is to handle RecyclerView item clicks in MainActivity, retrieves related note
+     * data in DetailActivity.
+     * And use can edit an existing note in DetailActivity.
      */
     @Override
     public void onClick(int notePosition) {
@@ -149,11 +157,13 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteA
         startActivity(intentToStartDetailActivity);
     }
 
+    // Used while data is loaded
     private void showRecyclerView() {
         mRecyclerView.setVisibility(View.VISIBLE);
         mEmptyTextView.setVisibility(View.INVISIBLE);
     }
 
+    // Used while there is no data returned
     private void showEmptyView() {
         mRecyclerView.setVisibility(View.INVISIBLE);
         mEmptyTextView.setVisibility(View.VISIBLE);
