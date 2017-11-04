@@ -27,6 +27,9 @@ import se.sugarest.jane.notes.api.NotesClient;
 import se.sugarest.jane.notes.data.NoteAdapter;
 import se.sugarest.jane.notes.data.type.Note;
 
+import static se.sugarest.jane.notes.util.Constant.INTENT_CURRENT_NOTE_SIZE_TITLE;
+import static se.sugarest.jane.notes.util.Constant.INTENT_NOTE_ID_TITLE;
+import static se.sugarest.jane.notes.util.Constant.INTENT_NOTE_POSITION_TITLE;
 import static se.sugarest.jane.notes.util.Constant.NOTES_BASE_URL;
 
 public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteAdapterOnClickHandler {
@@ -126,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteA
                 // Pass current_note_size to detailActivity.
                 // When adding a new note, its id shows up in detail activity will be
                 // current_note_size + 1
-                intent.putExtra("current_note_size", String.valueOf(mNotesSize));
+                intent.putExtra(INTENT_CURRENT_NOTE_SIZE_TITLE, String.valueOf(mNotesSize));
                 startActivity(intent);
             }
         });
@@ -141,8 +144,8 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteA
     public void onClick(int notePosition) {
         Note currentClickedNote = mNoteAdapter.getmNoteObjects().get(notePosition);
         Intent intentToStartDetailActivity = new Intent(MainActivity.this, DetailActivity.class);
-        intentToStartDetailActivity.putExtra("note_id", currentClickedNote.getId());
-        intentToStartDetailActivity.putExtra("note_position", notePosition);
+        intentToStartDetailActivity.putExtra(INTENT_NOTE_ID_TITLE, currentClickedNote.getId());
+        intentToStartDetailActivity.putExtra(INTENT_NOTE_POSITION_TITLE, notePosition);
         startActivity(intentToStartDetailActivity);
     }
 

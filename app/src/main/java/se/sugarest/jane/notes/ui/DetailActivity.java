@@ -23,14 +23,16 @@ import se.sugarest.jane.notes.data.type.Note;
 
 import static se.sugarest.jane.notes.util.Constant.ADD_A_NOTE;
 import static se.sugarest.jane.notes.util.Constant.EDIT_A_NOTE;
+import static se.sugarest.jane.notes.util.Constant.INTENT_CURRENT_NOTE_SIZE_TITLE;
+import static se.sugarest.jane.notes.util.Constant.INTENT_NOTE_ID_TITLE;
+import static se.sugarest.jane.notes.util.Constant.INTENT_NOTE_POSITION_TITLE;
 import static se.sugarest.jane.notes.util.Constant.NOTES_BASE_URL;
 
 /**
+ * This class handles the requests towards adding a new note, or editing an existing note(e.g.,
+ * update or deletion).
+ * <p>
  * Created by jane on 17-10-18.
- */
-
-/**
- * This activity is used for adding a new note, or editing and deleting an existing note.
  */
 public class DetailActivity extends AppCompatActivity {
     private static final String LOG_TAG = DetailActivity.class.getSimpleName();
@@ -53,38 +55,78 @@ public class DetailActivity extends AppCompatActivity {
         mTitleEditText = (EditText) findViewById(R.id.et_note_title);
         mDescriptionEditText = (EditText) findViewById(R.id.et_note_description);
 
-        // Figure out it is an AddNoteDetailActivity or it is an EditNoteDetailActivity
+        // By checking the content of the intent that started this activity, to figure out either
+        // this is an AddNoteActivity or an EditNoteActivity
         Intent intentThatStartedThisActivity = getIntent();
-        if (intentThatStartedThisActivity != null) {
-            if (intentThatStartedThisActivity.hasExtra("current_note_size")) {
-                // It is an AddNoteDetailActivity
-                setTitle(getString(R.string.set_detail_activity_title_add_a_note));
-                mAddAndEditRecordNumber = ADD_A_NOTE;
-                String currentNotesSize = getIntent().getExtras().getString("current_note_size");
-                mNotePositionId = Integer.parseInt(currentNotesSize) + 1;
-                mIdTextView.setText(String.valueOf(mNotePositionId));
-            } else if (intentThatStartedThisActivity.hasExtra("note_id")
-                    && intentThatStartedThisActivity.hasExtra("note_position")) {
-                // It is an EditAndDeleteNoteDetailActivity
-                setTitle(getString(R.string.set_detail_activity_title_edit_a_note));
-                mAddAndEditRecordNumber = EDIT_A_NOTE;
-                mNotePositionId = getIntent().getExtras().getInt("note_position") + 1;
-                mIdTextView.setText(String.valueOf(mNotePositionId));
-                mNoteSaveId = getIntent().getExtras().getInt("note_id");
-
-                sendNetworkRequestGetOneNote(mNoteSaveId);
-
-            }
+        if (intentThatStartedThisActivity == null) {
+            Log.e(LOG_TAG, "Missing intent.");
+            return;
+        }
+        if (!intentThatStartedThisActivity.hasExtra(INTENT_CURRENT_NOTE_SIZE_TITLE) &&
+                !intentThatStartedThisActivity.hasExtra(INTENT_NOTE_ID_TITLE) &&
+                !intentThatStartedThisActivity.hasExtra(INTENT_NOTE_POSITION_TITLE)) {
+            Log.e(LOG_TAG, "Missing intent extra information.");
+            return;
+        }
+        if (intentThatStartedThisActivity.hasExtra(INTENT_CURRENT_NOTE_SIZE_TITLE)) {
+            // It is an AddNoteActivity
+            setTitle(getString(R.string.set_detail_activity_title_add_a_note));
+            mAddAndEditRecordNumber = ADD_A_NOTE;
+            String currentNotesSize = getIntent().getExtras().getString(INTENT_CURRENT_NOTE_SIZE_TITLE);
+            mNotePositionId = Integer.parseInt(currentNotesSize) + 1;
+            mIdTextView.setText(String.valueOf(mNotePositionId));
+        }
+        if (intentThatStartedThisActivity.hasExtra(INTENT_NOTE_ID_TITLE)
+                && intentThatStartedThisActivity.hasExtra(INTENT_NOTE_POSITION_TITLE)) {
+            // It is an EditNoteActivity
+            setTitle(getString(R.string.set_detail_activity_title_edit_a_note));
+            mAddAndEditRecordNumber = EDIT_A_NOTE;
+            mNotePositionId = getIntent().getExtras().getInt(INTENT_NOTE_POSITION_TITLE) + 1;
+            mIdTextView.setText(String.valueOf(mNotePositionId));
+            mNoteSaveId = getIntent().getExtras().getInt(INTENT_NOTE_ID_TITLE);
+            sendNetworkRequestGetOneNote(mNoteSaveId);
         }
     }
 
-    // When this activity is in the AddNoteMode, it makes no sense to have the delete menu item
+    private void sendNetworkRequestGetOneNote(int id) {
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .baseUrl(NOTES_BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create());
+        Retrofit retrofit = builder.build();
+        NotesClient client = retrofit.create(NotesClient.class);
+        Call<Note> call = client.getOneNoteById(id);
+        call.enqueue(new Callback<Note>() {
+            @Override
+            public void onResponse(Call<Note> call, Response<Note> response) {
+                Log.i(LOG_TAG, "GET ONE response success: Complete url to request is: "
+                        + response.raw().request().url().toString()
+                        + "\nresponse.code() == " + response.code());
+                mCurrentNote = response.body();
+                mTitleEditText.setText(mCurrentNote.getTitle());
+                mDescriptionEditText.setText(mCurrentNote.getDescription());
+            }
+
+            @Override
+            public void onFailure(Call<Note> call, Throwable t) {
+                Log.i(LOG_TAG, "GET ONE response failure.");
+                if (mToast != null) {
+                    mToast.cancel();
+                }
+                mToast = Toast.makeText(DetailActivity.this, getString(R.string.toast_retrofit_get_on_failure), Toast.LENGTH_SHORT);
+                mToast.setGravity(Gravity.BOTTOM, 0, 0);
+                mToast.show();
+            }
+        });
+    }
+
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem deleteAction = menu.findItem(R.id.action_delete);
         if (mAddAndEditRecordNumber == ADD_A_NOTE) {
+            // Not showing Delete item in an AddNoteActivity
             deleteAction.setVisible(false);
         } else {
+            // User can only delete a note in an EditNoteActivity
             deleteAction.setVisible(true);
         }
         return true;
@@ -101,15 +143,15 @@ public class DetailActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_save:
                 if (mAddAndEditRecordNumber == ADD_A_NOTE) {
-                    // It is AddNoteMode
+                    // Add a note in an AddNoteActivity
                     createAndPostNewNote();
                 } else {
-                    // It is EditNoteMode
+                    // Edit a note in an EditNoteActivity
                     editAndPutCurrentNote();
                 }
                 return true;
             case R.id.action_delete:
-                // It is EditNoteMode, because in AddNoteMode, this delete item is invisible.
+                // Delete a note in an EditNoteActivity
                 deleteCurrentNote();
                 return true;
             default:
@@ -121,10 +163,38 @@ public class DetailActivity extends AppCompatActivity {
         sendNetworkRequestDelete(mNoteSaveId);
     }
 
+    private void sendNetworkRequestDelete(int id) {
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .baseUrl(NOTES_BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create());
+        Retrofit retrofit = builder.build();
+        NotesClient client = retrofit.create(NotesClient.class);
+        Call<Void> call = client.deleteNote(id);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                Log.i(LOG_TAG, "DELETE response success: Complete url to request is: "
+                        + response.raw().request().url().toString()
+                        + "\nresponse.code() == " + response.code());
+                finish();
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.i(LOG_TAG, "DELETE response failure.");
+                if (mToast != null) {
+                    mToast.cancel();
+                }
+                mToast = Toast.makeText(DetailActivity.this, getString(R.string.toast_retrofit_delete_on_failure), Toast.LENGTH_SHORT);
+                mToast.setGravity(Gravity.BOTTOM, 0, 0);
+                mToast.show();
+            }
+        });
+    }
+
     private void editAndPutCurrentNote() {
         String noteTitleString = mTitleEditText.getText().toString();
         String noteDescriptionString = mDescriptionEditText.getText().toString();
-
         // Sanity check, title and description cannot be empty.
         if (noteTitleString.isEmpty() || noteDescriptionString.isEmpty()) {
             if (mToast != null) {
@@ -139,10 +209,38 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
+    private void sendNetworkRequestPut(int id, Note note) {
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .baseUrl(NOTES_BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create());
+        Retrofit retrofit = builder.build();
+        NotesClient client = retrofit.create(NotesClient.class);
+        Call<Note> call = client.updateNote(id, note);
+        call.enqueue(new Callback<Note>() {
+            @Override
+            public void onResponse(Call<Note> call, Response<Note> response) {
+                Log.i(LOG_TAG, "PUT response success: Complete url to request is: "
+                        + response.raw().request().url().toString()
+                        + "\nresponse.body().toString == " + response.body().toString());
+                finish();
+            }
+
+            @Override
+            public void onFailure(Call<Note> call, Throwable t) {
+                Log.i(LOG_TAG, "PUT response failure.");
+                if (mToast != null) {
+                    mToast.cancel();
+                }
+                mToast = Toast.makeText(DetailActivity.this, getString(R.string.toast_retrofit_post_put_on_failure), Toast.LENGTH_SHORT);
+                mToast.setGravity(Gravity.BOTTOM, 0, 0);
+                mToast.show();
+            }
+        });
+    }
+
     private void createAndPostNewNote() {
         String noteTitleString = mTitleEditText.getText().toString();
         String noteDescriptionString = mDescriptionEditText.getText().toString();
-
         // Sanity check, title and description cannot be empty.
         if (noteTitleString.isEmpty() || noteDescriptionString.isEmpty()) {
             if (mToast != null) {
@@ -180,95 +278,6 @@ public class DetailActivity extends AppCompatActivity {
                     mToast.cancel();
                 }
                 mToast = Toast.makeText(DetailActivity.this, getString(R.string.toast_retrofit_post_put_on_failure), Toast.LENGTH_SHORT);
-                mToast.setGravity(Gravity.BOTTOM, 0, 0);
-                mToast.show();
-            }
-        });
-    }
-
-    private void sendNetworkRequestPut(int id, Note note) {
-        Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl(NOTES_BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create());
-        Retrofit retrofit = builder.build();
-        NotesClient client = retrofit.create(NotesClient.class);
-        Call<Note> call = client.updateNote(id, note);
-        call.enqueue(new Callback<Note>() {
-            @Override
-            public void onResponse(Call<Note> call, Response<Note> response) {
-                Log.i(LOG_TAG, "PUT response success: Complete url to request is: "
-                        + response.raw().request().url().toString()
-                        + "\nresponse.body().toString == " + response.body().toString());
-                finish();
-            }
-
-            @Override
-            public void onFailure(Call<Note> call, Throwable t) {
-                Log.i(LOG_TAG, "PUT response failure.");
-                if (mToast != null) {
-                    mToast.cancel();
-                }
-                mToast = Toast.makeText(DetailActivity.this, getString(R.string.toast_retrofit_post_put_on_failure), Toast.LENGTH_SHORT);
-                mToast.setGravity(Gravity.BOTTOM, 0, 0);
-                mToast.show();
-            }
-        });
-    }
-
-    private void sendNetworkRequestDelete(int id) {
-        Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl(NOTES_BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create());
-        Retrofit retrofit = builder.build();
-        NotesClient client = retrofit.create(NotesClient.class);
-        Call<Void> call = client.deleteNote(id);
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                Log.i(LOG_TAG, "DELETE response success: Complete url to request is: "
-                        + response.raw().request().url().toString()
-                        + "\nresponse.code() == " + response.code());
-                finish();
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Log.i(LOG_TAG, "DELETE response failure.");
-                if (mToast != null) {
-                    mToast.cancel();
-                }
-                mToast = Toast.makeText(DetailActivity.this, getString(R.string.toast_retrofit_delete_on_failure), Toast.LENGTH_SHORT);
-                mToast.setGravity(Gravity.BOTTOM, 0, 0);
-                mToast.show();
-            }
-        });
-    }
-
-    private void sendNetworkRequestGetOneNote(int id) {
-        Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl(NOTES_BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create());
-        Retrofit retrofit = builder.build();
-        NotesClient client = retrofit.create(NotesClient.class);
-        Call<Note> call = client.getOneNoteById(id);
-        call.enqueue(new Callback<Note>() {
-            @Override
-            public void onResponse(Call<Note> call, Response<Note> response) {
-                Log.i(LOG_TAG, "GET ONE response success: Complete url to request is: "
-                        + response.raw().request().url().toString()
-                        + "\nresponse.code() == " + response.code());
-                mCurrentNote = response.body();
-                mTitleEditText.setText(mCurrentNote.getTitle());
-                mDescriptionEditText.setText(mCurrentNote.getDescription());
-            }
-
-            @Override
-            public void onFailure(Call<Note> call, Throwable t) {
-                Log.i(LOG_TAG, "GET ONE response failure.");
-                if (mToast != null) {
-                    mToast.cancel();
-                }
-                mToast = Toast.makeText(DetailActivity.this, getString(R.string.toast_retrofit_get_on_failure), Toast.LENGTH_SHORT);
                 mToast.setGravity(Gravity.BOTTOM, 0, 0);
                 mToast.show();
             }
