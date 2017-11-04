@@ -1,6 +1,5 @@
 package se.sugarest.jane.notes.ui;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -75,18 +74,19 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteA
                         + response.raw().request().url().toString()
                         + "\nresponse.body().toString == " + response.body().toString());
                 List<Note> notesList = response.body();
-                // Sort notes order via id.
-                Collections.sort(notesList, new Comparator<Note>() {
-                    @Override
-                    public int compare(Note o1, Note o2) {
-                        return o1.getId() - o2.getId();
-                    }
-                });
-                mNoteAdapter.setNotesData(notesList);
-                mNotesSize = notesList.size();
-                if (mNotesSize == 0) {
+                if (notesList != null && !notesList.isEmpty()) {
+                    // Sort notes order via id.
+                    Collections.sort(notesList, new Comparator<Note>() {
+                        @Override
+                        public int compare(Note o1, Note o2) {
+                            return o1.getId() - o2.getId();
+                        }
+                    });
+                    mNoteAdapter.setNotesData(notesList);
+                } else {
                     showEmptyView();
                 }
+                mNotesSize = notesList.size();
             }
 
             @Override
@@ -140,9 +140,7 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteA
     @Override
     public void onClick(int notePosition) {
         Note currentClickedNote = mNoteAdapter.getmNoteObjects().get(notePosition);
-        Context context = this;
-        Class destinationClass = DetailActivity.class;
-        Intent intentToStartDetailActivity = new Intent(context, destinationClass);
+        Intent intentToStartDetailActivity = new Intent(MainActivity.this, DetailActivity.class);
         intentToStartDetailActivity.putExtra("note_id", currentClickedNote.getId());
         intentToStartDetailActivity.putExtra("note_position", notePosition);
         startActivity(intentToStartDetailActivity);
