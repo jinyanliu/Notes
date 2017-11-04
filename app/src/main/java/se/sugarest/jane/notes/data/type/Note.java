@@ -1,11 +1,11 @@
 package se.sugarest.jane.notes.data.type;
 
 /**
+ * It is the outermost JSON response from NoteApi.
+ * <p>
  * Created by jane on 17-10-18.
  */
 public class Note {
-
-    // To use Retrofit to parse JSON response, fields name here must be the same as the title in JSON.
     private int id;
     private String title;
     private String description;
