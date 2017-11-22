@@ -15,7 +15,6 @@ import static org.hamcrest.Matchers.is;
 /**
  * Created by jane on 17-11-22.
  */
-
 public class ToolbarTitleMatcher {
 
     public static ViewInteraction matchToolbarTitle(CharSequence title) {
@@ -25,10 +24,13 @@ public class ToolbarTitleMatcher {
 
     private static Matcher<Object> withToolbarTitle(final Matcher<CharSequence> textMatcher) {
         return new BoundedMatcher<Object, Toolbar>(Toolbar.class) {
-            @Override public boolean matchesSafely(Toolbar toolbar) {
+            @Override
+            public boolean matchesSafely(Toolbar toolbar) {
                 return textMatcher.matches(toolbar.getTitle());
             }
-            @Override public void describeTo(Description description) {
+
+            @Override
+            public void describeTo(Description description) {
                 description.appendText("with toolbar title: ");
                 textMatcher.describeTo(description);
             }

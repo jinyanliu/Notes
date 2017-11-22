@@ -19,6 +19,7 @@ import se.sugarest.jane.notes.data.type.Note;
  */
 @RunWith(AndroidJUnit4.class)
 public class NoteAdapterTest {
+
     private NoteAdapter noteAdapter;
     private List<Note> notesList = new ArrayList<>();
 

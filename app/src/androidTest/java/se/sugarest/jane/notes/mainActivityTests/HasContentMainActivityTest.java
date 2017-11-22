@@ -32,13 +32,13 @@ public class HasContentMainActivityTest {
             = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void mainScreenHasContent_FabButton(){
+    public void mainScreenHasContent_FabButton() {
         onView(ViewMatchers.withId(R.id.fab)).check(matches(isDisplayed())).check(matches(notNullValue()))
                 .check(matches(withDrawable(R.drawable.ic_add)));
     }
 
     @Test
-    public void mainScreenHasContent_recyclerView(){
+    public void mainScreenHasContent_recyclerView() {
         onView(withId(R.id.recycler_view)).check(matches(isDisplayed()));
     }
 

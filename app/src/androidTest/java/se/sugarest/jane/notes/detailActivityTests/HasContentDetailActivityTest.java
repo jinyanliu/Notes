@@ -37,35 +37,35 @@ public class HasContentDetailActivityTest {
     }
 
     @Test
-    public void detailScreenHasContent_idLabelTextView(){
+    public void detailScreenHasContent_idLabelTextView() {
         onView(withId(R.id.tv_note_id_label)).check(matches(isDisplayed())).check(matches(notNullValue()))
                 .check(matches(withText(instrumentationCtx.getString(R.string.note_id_label))));
     }
 
     @Test
-    public void detailScreenHasContent_idTextView(){
+    public void detailScreenHasContent_idTextView() {
         onView(withId(R.id.tv_note_id)).check(matches(isDisplayed())).check(matches(notNullValue()));
     }
 
     @Test
-    public void detailScreenHasContent_titleLabelTextView(){
+    public void detailScreenHasContent_titleLabelTextView() {
         onView(withId(R.id.tv_note_title_label)).check(matches(isDisplayed())).check(matches(notNullValue()))
                 .check(matches(withText(instrumentationCtx.getString(R.string.note_title_label))));
     }
 
     @Test
-    public void detailScreenHasContent_titleEditTextView(){
+    public void detailScreenHasContent_titleEditTextView() {
         onView(withId(R.id.et_note_title)).check(matches(isDisplayed()));
     }
 
     @Test
-    public void detailScreenHasContent_DescriptionLabelTextView(){
+    public void detailScreenHasContent_DescriptionLabelTextView() {
         onView(withId(R.id.tv_note_description_label)).check(matches(isDisplayed())).check(matches(notNullValue()))
                 .check(matches(withText(instrumentationCtx.getString(R.string.note_description_label))));
     }
 
     @Test
-    public void detailScreenHasContent_DescriptionEditTextView(){
+    public void detailScreenHasContent_DescriptionEditTextView() {
         onView(withId(R.id.et_note_description)).check(matches(isDisplayed()));
     }
 }
