@@ -17,11 +17,13 @@ import se.sugarest.jane.notes.ui.MainActivity;
 import static android.app.Instrumentation.ActivityResult;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.Intents.intending;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasExtraWithKey;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.isInternal;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
@@ -51,6 +53,9 @@ public class FabButtonIntentVerificationMainActivityTest {
         // Check the activity title shows on the toolbar of DetailActivity is "Add a note"
         CharSequence title = InstrumentationRegistry.getTargetContext().getString(R.string.set_detail_activity_title_add_a_note);
         matchToolbarTitle(title);
+
+        // Check action_save exists on menu item
+        onView(withId(R.id.action_save)).check(matches(isDisplayed()));
     }
 }
 

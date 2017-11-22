@@ -1,6 +1,7 @@
 package se.sugarest.jane.notes.mainActivityTests;
 
 import android.app.Activity;
+import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.IdlingResource;
 import android.support.test.espresso.contrib.RecyclerViewActions;
@@ -19,15 +20,19 @@ import se.sugarest.jane.notes.ui.MainActivity;
 
 import static android.app.Instrumentation.ActivityResult;
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static android.support.test.espresso.IdlingRegistry.getInstance;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.Intents.intending;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasExtra;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasExtraWithKey;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.isInternal;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 import static se.sugarest.jane.notes.util.Constant.INTENT_NOTE_ID_TITLE;
@@ -41,6 +46,13 @@ import static se.sugarest.jane.notes.util.ToolbarTitleMatcher.matchToolbarTitle;
 public class RecyclerViewIntentVerificationMainActivityTest {
 
     private IdlingResource mIdlingResource;
+
+    private Context instrumentationCtx;
+
+    @Before
+    public void setUp() {
+        instrumentationCtx = InstrumentationRegistry.getTargetContext();
+    }
 
     @Rule
     public IntentsTestRule<MainActivity> mIntentsTestRule = new IntentsTestRule<>(MainActivity.class);
@@ -65,8 +77,17 @@ public class RecyclerViewIntentVerificationMainActivityTest {
                 hasComponent(DetailActivity.class.getName())));
 
         // Check the activity title shows on the toolbar of DetailActivity is "Edit a note"
-        CharSequence title = InstrumentationRegistry.getTargetContext().getString(R.string.set_detail_activity_title_edit_a_note);
-        matchToolbarTitle(title);
+        matchToolbarTitle(instrumentationCtx.getString(R.string.set_detail_activity_title_edit_a_note));
+
+        // Check action_save exists on menu item
+        onView(withId(R.id.action_save)).check(matches(isDisplayed()));
+
+        // Open the overflow menu OR open the options menu,
+        // depending on if the device has a hardware or software overflow menu button.
+        openActionBarOverflowOrOptionsMenu(instrumentationCtx);
+
+        // Check "Delete", action_delete exists on menu item
+        onView(withText(instrumentationCtx.getString(R.string.action_delete))).check(matches(isDisplayed()));
     }
 
     // Remember to unregister resources when not needed to avoid malfunction.
