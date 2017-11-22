@@ -35,6 +35,11 @@ public class HasContentMainActivityTest {
                 .check(matches(withDrawable(R.drawable.ic_add)));
     }
 
+    @Test
+    public void mainScreenHasContent_recyclerView(){
+        onView(withId(R.id.recycler_view)).check(matches(isDisplayed()));
+    }
+
     public static class EspressoTestsMatchers {
 
         public static Matcher<View> withDrawable(final int resourceId) {
