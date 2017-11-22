@@ -1,6 +1,7 @@
 package se.sugarest.jane.notes.mainActivityTests;
 
 import android.app.Activity;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.IdlingResource;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
@@ -31,6 +32,7 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 import static se.sugarest.jane.notes.util.Constant.INTENT_NOTE_ID_TITLE;
 import static se.sugarest.jane.notes.util.Constant.INTENT_NOTE_POSITION_TITLE;
+import static se.sugarest.jane.notes.util.ToolbarTitleMatcher.matchToolbarTitle;
 
 /**
  * Created by jane on 17-11-22.
@@ -56,11 +58,15 @@ public class RecyclerViewIntentVerificationMainActivityTest {
     }
 
     @Test
-    public void clickFabButton_OpensDetailActivity() {
+    public void clickRecyclerViewItem_OpensDetailActivity() {
         onView(withId(R.id.recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
         intended(allOf(hasExtraWithKey(INTENT_NOTE_ID_TITLE),
                 hasExtra(INTENT_NOTE_POSITION_TITLE, 0),
                 hasComponent(DetailActivity.class.getName())));
+
+        // Check the activity title shows on the toolbar of DetailActivity is "Edit a note"
+        CharSequence title = InstrumentationRegistry.getTargetContext().getString(R.string.set_detail_activity_title_edit_a_note);
+        matchToolbarTitle(title);
     }
 
     // Remember to unregister resources when not needed to avoid malfunction.

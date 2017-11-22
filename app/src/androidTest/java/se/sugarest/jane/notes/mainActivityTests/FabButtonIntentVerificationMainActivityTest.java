@@ -1,6 +1,7 @@
 package se.sugarest.jane.notes.mainActivityTests;
 
 import android.app.Activity;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -25,6 +26,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 import static se.sugarest.jane.notes.util.Constant.INTENT_CURRENT_NOTE_SIZE_TITLE;
+import static se.sugarest.jane.notes.util.ToolbarTitleMatcher.matchToolbarTitle;
 
 /**
  * Created by jane on 17-10-18.
@@ -45,6 +47,10 @@ public class FabButtonIntentVerificationMainActivityTest {
         onView(withId(R.id.fab)).perform(click());
         intended(allOf(hasExtraWithKey(INTENT_CURRENT_NOTE_SIZE_TITLE),
                 hasComponent(DetailActivity.class.getName())));
+
+        // Check the activity title shows on the toolbar of DetailActivity is "Add a note"
+        CharSequence title = InstrumentationRegistry.getTargetContext().getString(R.string.set_detail_activity_title_add_a_note);
+        matchToolbarTitle(title);
     }
 }
 
