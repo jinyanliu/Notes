@@ -1,5 +1,6 @@
-package se.sugarest.jane.notes;
+package se.sugarest.jane.notes.mainActivityTests;
 
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.view.View;
@@ -9,6 +10,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import se.sugarest.jane.notes.R;
 import se.sugarest.jane.notes.ui.MainActivity;
 import se.sugarest.jane.notes.util.DrawableMatcher;
 
@@ -17,7 +19,7 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.notNullValue;
-import static se.sugarest.jane.notes.HasContentMainActivityTest.EspressoTestsMatchers.withDrawable;
+import static se.sugarest.jane.notes.mainActivityTests.HasContentMainActivityTest.EspressoTestsMatchers.withDrawable;
 
 /**
  * Created by jane on 17-11-22.
@@ -31,7 +33,7 @@ public class HasContentMainActivityTest {
 
     @Test
     public void mainScreenHasContent_FabButton(){
-        onView(withId(R.id.fab)).check(matches(isDisplayed())).check(matches(notNullValue()))
+        onView(ViewMatchers.withId(R.id.fab)).check(matches(isDisplayed())).check(matches(notNullValue()))
                 .check(matches(withDrawable(R.drawable.ic_add)));
     }
 
