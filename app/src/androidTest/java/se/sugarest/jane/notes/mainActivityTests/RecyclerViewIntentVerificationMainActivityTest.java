@@ -1,6 +1,7 @@
 package se.sugarest.jane.notes.mainActivityTests;
 
 import android.app.Activity;
+import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -19,18 +20,20 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.Intents.intending;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.hasExtra;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasExtraWithKey;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.isInternal;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
-import static se.sugarest.jane.notes.util.Constant.INTENT_CURRENT_NOTE_SIZE_TITLE;
+import static se.sugarest.jane.notes.util.Constant.INTENT_NOTE_ID_TITLE;
+import static se.sugarest.jane.notes.util.Constant.INTENT_NOTE_POSITION_TITLE;
 
 /**
- * Created by jane on 17-10-18.
+ * Created by jane on 17-11-22.
  */
 @RunWith(AndroidJUnit4.class)
-public class IntentVerificationMainActivityTest {
+public class RecyclerViewIntentVerificationMainActivityTest {
 
     @Rule
     public IntentsTestRule<MainActivity> intentsTestRule = new IntentsTestRule<>(MainActivity.class);
@@ -42,9 +45,9 @@ public class IntentVerificationMainActivityTest {
 
     @Test
     public void clickFabButton_OpensDetailActivity() {
-        onView(withId(R.id.fab)).perform(click());
-        intended(allOf(hasExtraWithKey(INTENT_CURRENT_NOTE_SIZE_TITLE),
+        onView(withId(R.id.recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+        intended(allOf(hasExtraWithKey(INTENT_NOTE_ID_TITLE),
+                hasExtra(INTENT_NOTE_POSITION_TITLE, 0),
                 hasComponent(DetailActivity.class.getName())));
     }
 }
-
