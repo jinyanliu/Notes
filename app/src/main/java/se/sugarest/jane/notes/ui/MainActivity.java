@@ -2,7 +2,11 @@ package se.sugarest.jane.notes.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.FloatingActionButton;
+import android.support.test.espresso.IdlingResource;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,6 +30,7 @@ import se.sugarest.jane.notes.R;
 import se.sugarest.jane.notes.api.NotesClient;
 import se.sugarest.jane.notes.data.NoteAdapter;
 import se.sugarest.jane.notes.data.type.Note;
+import se.sugarest.jane.notes.idlingResource.SimpleIdlingResource;
 
 import static se.sugarest.jane.notes.util.Constant.INTENT_CURRENT_NOTE_SIZE_TITLE;
 import static se.sugarest.jane.notes.util.Constant.INTENT_NOTE_ID_TITLE;
@@ -45,6 +50,22 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteA
     private int mNotesSize;
     private Toast mToast;
 
+    // The Idling Resource which will be null in production.
+    @Nullable
+    private SimpleIdlingResource mIdlingResource;
+
+    /**
+     * Only called from test, creates and returns a new {@link SimpleIdlingResource}.
+     */
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getIdlingResource() {
+        if (mIdlingResource == null) {
+            mIdlingResource = new SimpleIdlingResource();
+        }
+        return mIdlingResource;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +76,9 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteA
         setUpFabButtonOnClick();
         setUpRecyclerViewWithAdapter();
         sendNetworkRequestGet();
+
+        // Get the IdlingResource instance
+        getIdlingResource();
     }
 
     /**
@@ -70,6 +94,11 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteA
     // Use External Library Retrofit to GET notes list.
     // Reference: https://github.com/square/retrofit
     private void sendNetworkRequestGet() {
+
+        if (mIdlingResource != null) {
+            mIdlingResource.setIdleState(false);
+        }
+
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         Retrofit.Builder builder =
                 new Retrofit.Builder()
@@ -96,6 +125,11 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.NoteA
                         }
                     });
                     mNoteAdapter.setNotesData(notesList);
+
+                    if (mIdlingResource != null) {
+                        mIdlingResource.setIdleState(true);
+                    }
+
                 } else {
                     showEmptyView();
                 }
