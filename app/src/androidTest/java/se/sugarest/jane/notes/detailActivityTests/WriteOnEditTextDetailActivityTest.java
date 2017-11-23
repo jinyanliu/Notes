@@ -21,20 +21,20 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
  * Created by jane on 17-11-22.
  */
 @RunWith(AndroidJUnit4.class)
-public class WriteOnEditTextViewDetailActivityTest {
+public class WriteOnEditTextDetailActivityTest {
 
     @Rule
     public ActivityTestRule<DetailActivity> mActivityTestRule = new ActivityTestRule<>(DetailActivity.class);
 
     @Test
-    public void writeOnTitleEditTextViewTest() {
-        onView(withId(R.id.et_note_title)).perform(typeText("Buy Milk"), closeSoftKeyboard());
-        onView(withId(R.id.et_note_title)).check(matches(withText("Buy Milk")));
+    public void writeOnTitleEditTextTest() {
+        onView(withId(R.id.et_note_title)).perform(typeText("Buy Milk"), closeSoftKeyboard())
+                .check(matches(withText("Buy Milk")));
     }
 
     @Test
-    public void detailActivityDescriptionEditTextTest() {
-        onView(withId(R.id.et_note_description)).perform(typeText("Before 6pm"), closeSoftKeyboard());
-        onView(withId(R.id.et_note_description)).check(matches(withText("Before 6pm")));
+    public void writeOnDescriptionEditTextTest() {
+        onView(withId(R.id.et_note_description)).perform(typeText("Before 6pm"), closeSoftKeyboard())
+                .check(matches(withText("Before 6pm")));
     }
 }

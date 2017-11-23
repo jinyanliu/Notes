@@ -1,6 +1,5 @@
 package se.sugarest.jane.notes.mainActivityTests;
 
-import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.view.View;
@@ -33,7 +32,7 @@ public class HasContentMainActivityTest {
 
     @Test
     public void mainScreenHasContent_FabButton() {
-        onView(ViewMatchers.withId(R.id.fab)).check(matches(isDisplayed())).check(matches(notNullValue()))
+        onView(withId(R.id.fab)).check(matches(isDisplayed())).check(matches(notNullValue()))
                 .check(matches(withDrawable(R.drawable.ic_add)));
     }
 
